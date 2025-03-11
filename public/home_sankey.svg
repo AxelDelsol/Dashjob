@@ -1,0 +1,39 @@
+<svg height="300" width="500" xmlns="http://www.w3.org/2000/svg">
+<title>Your Diagram Title</title>
+<!-- Generated with SankeyMATIC: 05/03/2025 14:42:20 -->
+<rect height="300" width="500" fill="#ffffff"></rect>
+<g transform="translate(107.11835,6)">
+<g id="sankey_flows">
+<path id="flow2" d="M12 124.08357C152.94499 124.08357 152.94499 227.65356 293.88999 227.65356" fill="none" stroke-width="69.55714" stroke="#1f77b4" opacity="0.45"><title>Candidatures → Refusées: 10</title></path>
+<path id="flow1" d="M12 78.87143C152.94499 78.87143 152.94499 134.16777 293.88999 134.16777" fill="none" stroke-width="20.86714" stroke="#1f77b4" opacity="0.45"><title>Candidatures → En attente: 3</title></path>
+<path id="flow0" d="M12 64.96C152.94499 64.96 152.94499 26.34118 293.88999 26.34118" fill="none" stroke-width="6.95571" stroke="#1f77b4" opacity="0.45"><title>Candidatures → Acceptée: 1</title></path>
+</g>
+<g id="sankey_nodes">
+<g class="node">
+<rect id="r0" class="for_r0" x="0" y="117.67521" height="97.38" width="12" fill="#1f77b4" fill-opacity="1" transform="translate(0,-56.19307)"><title>Candidatures:
+14</title></rect>
+</g>
+<g class="node">
+<rect id="r1" class="for_r1" x="293.88999" y="61.79745" height="6.95571" width="12" fill="#ff7f0e" fill-opacity="1" transform="translate(0,-38.93412)"><title>Acceptée:
+1</title></rect>
+</g>
+<g class="node">
+<rect id="r2" class="for_r2" x="293.88999" y="102.76571" height="20.86714" width="12" fill="#2ca02c" fill-opacity="1" transform="translate(0,20.96849)"><title>En attente:
+3</title></rect>
+</g>
+<g class="node">
+<rect id="r3" class="for_r3" x="293.88999" y="157.64541" height="69.55714" width="12" fill="#d62728" fill-opacity="1" transform="translate(0,35.22958)"><title>Refusées:
+10</title></rect>
+</g>
+</g>
+<g id="sankey_labels" font-family="sans-serif" font-size="16px" fill="#000000">
+<rect id="label0_bg" class="for_r0" x="-96.99167" y="145.07189" width="95.485" height="42.25332" rx="4" fill="#fff" fill-opacity="0.75" stroke="none" stroke-width="0" stroke-opacity="0" transform="translate(0,-56.19307)"></rect>
+<text id="label0" class="for_r0" text-anchor="end" x="-6.3" y="166.36521" font-weight="400" font-size="14.4px" dy="-5.15999" transform="translate(0,-56.19307)">Candidatures<tspan x="-6.3" dy="19.32" font-weight="400" font-size="17.6px">14</tspan></text>
+<rect id="label1_bg" class="for_r1" x="306.85668" y="43.98199" width="70.42086" height="42.25333" rx="4" fill="#fff" fill-opacity="0.75" stroke="none" stroke-width="0" stroke-opacity="0" transform="translate(0,-38.93412)"></rect>
+<text id="label1" class="for_r1" text-anchor="start" x="312.18999" y="65.27531" font-weight="400" font-size="14.4px" dy="-5.15999" transform="translate(0,-38.93412)">Acceptée<tspan x="312.18999" dy="19.32" font-weight="400" font-size="17.6px">1</tspan></text>
+<rect id="label2_bg" class="for_r2" x="307.52334" y="91.90596" width="75.35836" height="42.25334" rx="4" fill="#fff" fill-opacity="0.75" stroke="none" stroke-width="0" stroke-opacity="0" transform="translate(0,20.96849)"></rect>
+<text id="label2" class="for_r2" text-anchor="start" x="312.18999" y="113.19929" font-weight="400" font-size="14.4px" dy="-5.15999" transform="translate(0,20.96849)">En attente<tspan x="312.18999" dy="19.32" font-weight="400" font-size="17.6px">3</tspan></text>
+<rect id="label3_bg" class="for_r3" x="307.52334" y="171.13066" width="70.67617" height="42.25335" rx="4" fill="#fff" fill-opacity="0.75" stroke="none" stroke-width="0" stroke-opacity="0" transform="translate(0,35.22958)"></rect>
+<text id="label3" class="for_r3" text-anchor="start" x="312.18999" y="192.42398" font-weight="400" font-size="14.4px" dy="-5.15999" transform="translate(0,35.22958)">Refusées<tspan x="312.18999" dy="19.32" font-weight="400" font-size="17.6px">10</tspan></text>
+</g>
+</g></svg>
