@@ -2,17 +2,9 @@
 
 import { Application } from "@/lib/definitions"
 import { ColumnDef } from "@tanstack/react-table"
-import { ArrowUpDown, MoreHorizontal, NotepadText, Pencil, Trash2 } from "lucide-react"
+import { ArrowUpDown } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 
 import Status from "./status"
 
@@ -22,11 +14,11 @@ export const columns: ColumnDef<Application>[] = [
     header: "Titre",
   },
   {
-    accessorKey: "company",
+    accessorKey: "company_name",
     header: "Entreprise",
   },
   {
-    accessorKey: "creation_date",
+    accessorKey: "application_date",
     header: ({ column }) => {
       return (
         <Button
@@ -43,7 +35,7 @@ export const columns: ColumnDef<Application>[] = [
       const application = row.original
       return (
         <div className="pl-10">
-          {application.creation_date.toISOString().split('T')[0]}
+          {application.application_date.toISOString().split('T')[0]}
         </div>
       )
     },
@@ -59,9 +51,9 @@ export const columns: ColumnDef<Application>[] = [
             value={column.getFilterValue() as string}
             className="text-base w-30"
           >
-            {/* See faceted column filters example for dynamic select options */}
             <option value="">Tous</option>
             <hr />
+            <option value="applied">Envoyée</option>
             <option value="pending">En attente</option>
             <option value="rejected">Refusée</option>
             <option value="accepted">Acceptée</option>
@@ -74,37 +66,6 @@ export const columns: ColumnDef<Application>[] = [
         <div className=" font-medium">
           <Status status={row.getValue("status")} />
         </div>
-      )
-    },
-  },
-  {
-    id: "actions",
-    cell: () => {
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <NotepadText className="w-6" />
-              <span className="md:block">Details</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Pencil className="w-6" />
-              <span className="md:block">Modifier</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Trash2 className="w-6" />
-              <span className="md:block">Supprimer</span>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
       )
     },
   },
