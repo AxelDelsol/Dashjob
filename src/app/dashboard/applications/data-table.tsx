@@ -24,6 +24,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { Application } from "@/lib/definitions"
 import { useRouter } from "next/navigation"
 
 interface DataTableProps<TData, TValue> {
@@ -84,7 +85,10 @@ export function DataTable<TData, TValue>({
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
-                onClick={() => router.push(`/dashboard/applications/${row.id}`)}
+                onClick={() => {
+                  const application = row.original as Application
+                  router.push(`/dashboard/applications/${application.id}`)
+                }}
                 className="cursor-pointer"
               >
                 {row.getVisibleCells().map((cell) => (
