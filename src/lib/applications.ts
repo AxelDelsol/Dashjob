@@ -24,7 +24,8 @@ export async function fetchApplicationById(id: number) {
         applications.company_name,
         applications.description,
         applications.status,
-        applications.application_date
+        applications.application_date,
+        applications.annual_salary
       FROM applications
       WHERE applications.id = ${id}`;
 
