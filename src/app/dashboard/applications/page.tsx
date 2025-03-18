@@ -1,6 +1,6 @@
 import { fetchApplications } from "@/lib/applications";
-import { columns } from "./columns";
-import { DataTable } from "./data-table";
+import { columns } from "./_components/columns";
+import { DataTable } from "./_components/data-table";
 
 export const dynamic = 'force-dynamic'
 

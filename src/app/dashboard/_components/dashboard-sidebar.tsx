@@ -14,7 +14,7 @@ import {
   Button
 } from '@/components/ui/button'
 
-import { CalendarCheck, Table } from "lucide-react"
+import { Table } from "lucide-react"
 
 // Menu items.
 const items = [
@@ -23,11 +23,11 @@ const items = [
     url: "/dashboard/applications",
     icon: Table,
   },
-  {
-    title: "Entretiens",
-    url: "#",
-    icon: CalendarCheck,
-  }
+  // {
+  //   title: "Entretiens",
+  //   url: "#",
+  //   icon: CalendarCheck,
+  // }
 ]
 
 export function DashboardSidebar() {

@@ -6,8 +6,8 @@ import { ArrowUpDown } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 
+import Status from "@/components/shared/status"
 import { formatDate } from "@/lib/utils"
-import Status from "../../../components/dashboard/applications/status"
 
 export const columns: ColumnDef<Application>[] = [
   {

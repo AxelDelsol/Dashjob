@@ -1,7 +1,7 @@
+import Status from "@/components/shared/status";
 import { fetchApplicationById } from "@/lib/applications";
 import { formatDate } from "@/lib/utils";
 import { notFound } from "next/navigation";
-import Status from "../../../../components/dashboard/applications/status";
 
 export default async function Page(props: { params: Promise<{ id: number }> }) {
   const params = await props.params;
