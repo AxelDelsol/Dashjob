@@ -7,7 +7,7 @@ export const dynamic = 'force-dynamic'
 export default async function Page() {
   const applications = await fetchApplications();
   return (
-    <div className="container mx-auto py-10">
+    <div className="py-10">
       <DataTable columns={columns} data={applications} />
     </div>
   )

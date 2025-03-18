@@ -1,17 +1,14 @@
 import { DashboardSidebar } from "@/app/dashboard/_components/dashboard-sidebar"
-import { SidebarProvider } from "@/components/ui/sidebar"
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex h-screen flex-col md:flex-row md:overflow-hidden">
-      <SidebarProvider>
-        <div className="w-full flex-none md:w-64">
-          <DashboardSidebar />
-        </div>
-        <div className="flex-grow p-6 md:overflow-y-auto md:p-12">
-          {children}
-        </div>
-      </SidebarProvider>
-    </div>
+    <SidebarProvider className="flex flex-col md:flex-row md:overflow-hidden">
+      <DashboardSidebar />
+      <main className="flex-grow p-6 md:overflow-y-auto">
+        <SidebarTrigger className="md:hidden" />
+        {children}
+      </main>
+    </SidebarProvider>
   )
 }
