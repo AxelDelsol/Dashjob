@@ -21,7 +21,7 @@ import Link from "next/link"
 const items = [
   {
     title: "Candidatures",
-    url: "/dashboard/applications",
+    url: "/applications",
     icon: Table,
   },
   // {

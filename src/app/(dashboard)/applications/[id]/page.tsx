@@ -13,7 +13,7 @@ export default async function Page(props: { params: Promise<{ id: number }> }) {
   }
 
   return (
-    <main className="container mx-auto">
+    <main className="container py-10">
       <div className="flex flex-row gap-1.5 text-4xl font-bold pb-3">
         <h1>Candidature</h1>
         <Status status={application.status} />

@@ -90,7 +90,7 @@ export function DataTable<TData, TValue>({
                 data-state={row.getIsSelected() && "selected"}
                 onClick={() => {
                   const application = row.original as Application
-                  router.push(`/dashboard/applications/${application.id}`)
+                  router.push(`/applications/${application.id}`)
                 }}
                 className="cursor-pointer"
               >
