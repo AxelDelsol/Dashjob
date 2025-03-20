@@ -59,7 +59,10 @@ export function DataTable<TData, TValue>({
 
   return (
     <>
-      <Search table={table} />
+      <div className="flex-row flex pb-4 align-middle gap-6">
+        <Search table={table} />
+        {/* <Button>Ajouter une candidature</Button> */}
+      </div>
       <Table className="rounded-md border">
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -87,7 +90,7 @@ export function DataTable<TData, TValue>({
                 data-state={row.getIsSelected() && "selected"}
                 onClick={() => {
                   const application = row.original as Application
-                  router.push(`/dashboard/applications/${application.id}`)
+                  router.push(`/applications/${application.id}`)
                 }}
                 className="cursor-pointer"
               >
@@ -115,16 +118,14 @@ export function DataTable<TData, TValue>({
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function Search({ table }: { table: any }) {
   return (
-    <div className="flex items-center py-4">
-      <Input
-        placeholder="Filtrer par titre ..."
-        value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
-        onChange={(event) =>
-          table.getColumn("title")?.setFilterValue(event.target.value)
-        }
-        className="max-w-sm"
-      />
-    </div>
+    <Input
+      placeholder="Filtrer par titre ..."
+      value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
+      onChange={(event) =>
+        table.getColumn("title")?.setFilterValue(event.target.value)
+      }
+      className="max-w-xs"
+    />
   )
 }
 

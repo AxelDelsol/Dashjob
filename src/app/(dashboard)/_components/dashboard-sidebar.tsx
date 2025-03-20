@@ -14,37 +14,38 @@ import {
   Button
 } from '@/components/ui/button'
 
-import { CalendarCheck, Table } from "lucide-react"
+import { Table } from "lucide-react"
+import Link from "next/link"
 
 // Menu items.
 const items = [
   {
     title: "Candidatures",
-    url: "/dashboard/applications",
+    url: "/applications",
     icon: Table,
   },
-  {
-    title: "Entretiens",
-    url: "#",
-    icon: CalendarCheck,
-  }
+  // {
+  //   title: "Entretiens",
+  //   url: "#",
+  //   icon: CalendarCheck,
+  // }
 ]
 
 export function DashboardSidebar() {
   return (
-    <Sidebar>
+    <Sidebar collapsible="icon">
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
+          <SidebarGroupLabel>Dashjob</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url}>
+                    <Link href={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}

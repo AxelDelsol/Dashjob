@@ -6,7 +6,8 @@ import { ArrowUpDown } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 
-import Status from "./status"
+import Status from "@/components/shared/status"
+import { formatDate } from "@/lib/utils"
 
 export const columns: ColumnDef<Application>[] = [
   {
@@ -35,7 +36,7 @@ export const columns: ColumnDef<Application>[] = [
       const application = row.original
       return (
         <div className="pl-10">
-          {application.application_date.toISOString().split('T')[0]}
+          {formatDate(application.application_date)}
         </div>
       )
     },
