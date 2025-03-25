@@ -9,3 +9,12 @@ export type Application = {
 }
 
 export type ApplicationStatus = 'applied' | 'pending' | 'rejected' | 'accepted';
+
+export type User = {
+  id: number,
+  email: string,
+  hashed_password: string,
+  status: UserStatus
+}
+
+export type UserStatus = 'pending' | 'validated';

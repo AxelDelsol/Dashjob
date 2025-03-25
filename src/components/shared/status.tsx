@@ -14,8 +14,8 @@ export default function Status({ status }: { status: ApplicationStatus }) {
     <Badge variant="outline" className={clsx(
       'w-22 text-center text-sm border-2 p-1.5 rounded-lg',
       {
-        'bg-gray-200 border-gray-600 text-gray-950': status === 'accepted',
-        'bg-yellow-200 border-yellow-600 text-yellow-950': status === 'pending',
+        'bg-blue-200 border-blue-600 text-blue-950': status === 'applied',
+        'bg-orange-200 border-orange-600 text-orange-950': status === 'pending',
         'bg-red-200 border-red-600 text-red-950': status === 'rejected',
         'bg-green-200 border-green-600 text-green-950': status === 'accepted'
       }
