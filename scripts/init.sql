@@ -1,6 +1,5 @@
 -- CreateTable
-CREATE TYPE application_status as ENUM ('applied', 'pending', 'rejected', 'accepted');
-
+CREATE TYPE application_status AS ENUM ('applied', 'pending', 'rejected', 'accepted');
 CREATE TABLE applications (
   id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
   title VARCHAR(100) NOT NULL,
@@ -10,6 +9,15 @@ CREATE TABLE applications (
   description VARCHAR(200),
   annual_salary INT
 );
+
+CREATE TYPE user_status AS ENUM ('pending', 'validated');
+CREATE TABLE users (
+  id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+  email VARCHAR(64) UNIQUE NOT NULL,
+  hashed_password VARCHAR(64) NOT NULL,
+  status user_status DEFAULT 'pending' NOT NULL
+);
+
 
 -- Seed
 INSERT INTO applications (title, company_name, application_date, status, description, annual_salary)

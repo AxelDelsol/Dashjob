@@ -106,6 +106,5 @@ function expect_invalid_field(schema: z.ZodTypeAny, data: object, error_field: s
     expect(validatedData.success).toBeFalsy();
 
     const errors = validatedData.error!.flatten().fieldErrors!;
-    console.log(errors)
     expect(errors[error_field]).toContain(error_message)
 }

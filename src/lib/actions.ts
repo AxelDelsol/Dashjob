@@ -1,7 +1,10 @@
 'use server';
 
 import { redirect } from "next/navigation";
-import { UserCreate } from "./users";
+import postgres from 'postgres';
+
+import { UNIQUE_VIOLATION } from "./db";
+import { createUser, EMAIL_ALREADY_TAKEN, UserCreate } from "./users";
 
 export type SignUpError = {
   email?: string[],
@@ -21,7 +24,14 @@ export async function signUpAction(prevState: SignUpError, formData: FormData) {
     return {...validatedFields.error.flatten().fieldErrors};
   }
 
-
-
-  redirect('/applications');
+  try {
+    await createUser(validatedFields.data.email, validatedFields.data.password)
+    redirect('/applications');
+  }catch (error) {
+    if (error instanceof postgres.PostgresError && error.code === UNIQUE_VIOLATION) {
+      return { email: [EMAIL_ALREADY_TAKEN] }
+    } else {
+      throw error;
+    }
+  }
 }

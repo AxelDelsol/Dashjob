@@ -1,4 +1,6 @@
-import postgres from 'postgres'
+import postgres from 'postgres';
+
+export const UNIQUE_VIOLATION = '23505';
 
 const sql =
   process.env.NODE_ENV === 'production'

@@ -31,7 +31,6 @@ export default function Breadcrumb() {
   const segments = []
 
   for (const segment of pathname.split('/').slice(0, -1)) {
-    console.log(segment)
     if (segment in segment_mapping) {
       segments.push(segment_mapping[segment])
     }
