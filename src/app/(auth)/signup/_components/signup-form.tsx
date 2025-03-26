@@ -10,11 +10,19 @@ import { useActionState } from "react";
 
 export default function SignUpForm() {
   const initialState: SignUpError = {};
-  const [state, formAction] = useActionState(signUpAction, initialState);
+  const [state, formAction, isPending] = useActionState(signUpAction, initialState);
 
   return (
-    <form action={formAction}>
+    <form action={formAction} aria-describedby="form-error">
       <div className="grid w-full items-center gap-4">
+        <div id="form-error" aria-live="polite" aria-atomic="true">
+          {state.message &&
+            <p className="mt-2 text-red-500" key={state.message}>
+              {state.message}
+            </p>
+          }
+        </div>
+
         <div className="mb-4">
           <div className="flex flex-col space-y-1.5">
             <Label htmlFor="email">Adresse email</Label>
@@ -26,7 +34,7 @@ export default function SignUpForm() {
               placeholder="email@example.com"
             />
           </div>
-          <ErrorText id="email-error" error_messages={state.email} />
+          <ErrorText id="email-error" error_messages={state?.errors?.email} />
         </div>
 
         <div className="mb-4">
@@ -39,7 +47,7 @@ export default function SignUpForm() {
               id="password"
               aria-describedby="password-error" />
           </div>
-          <ErrorText id="password-error" error_messages={state.password} />
+          <ErrorText id="password-error" error_messages={state?.errors?.password} />
         </div>
 
         <div className="mb-4">
@@ -51,14 +59,16 @@ export default function SignUpForm() {
               id="confirmedPassword"
               aria-describedby="confirmedPassword-error" />
           </div>
-          <ErrorText id="confirmedPassword-error" error_messages={state.confirmedPassword} />
+          <ErrorText id="confirmedPassword-error" error_messages={state?.errors?.confirmedPassword} />
         </div>
 
         <div className="flex items-center justify-evenly px-6 [.border-t]:pt-6">
           <Button variant="outline" asChild>
             <Link href="/">Annuler</Link>
           </Button>
-          <Button type="submit" className="bg-blue-500 text-white transition-colors hover:bg-blue-400">S&apos;inscrire</Button>
+          <Button type="submit" disabled={isPending} className="bg-blue-500 text-white transition-colors hover:bg-blue-400">
+            {isPending ? "Inscription..." : "S'inscrire"}
+          </Button>
         </div>
       </div>
     </form>
