@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import { z } from "zod";
 import sql from "./db";
+import { User } from "./definitions";
 
 export const REQUIRED_FIELD = "Le champ est obligatoire";
 export const INVALID_EMAIL = "L'adresse email invalide";
@@ -80,15 +81,19 @@ export async function createUser(
 // const user: User = await getUserByEmail(email);
 // bcrypt.compareSync(password, user.hashed_password)
 
-// export async function getUserByEmail(email: string) {
-//   const data = await sql<User[]>`
-//       SELECT
-//         users.id,
-//         users.email,
-//         users.hashed_password,
-//         users.status
-//       FROM users
-//       WHERE users.email = ${email}`;
+export async function getUserByEmail(email: string) {
+  const data = await sql<User[]>`
+      SELECT
+        users.id,
+        users.email,
+        users.hashed_password,
+        users.status
+      FROM users
+      WHERE users.email = ${email}`;
 
-//     return data[0];
-// }
+  return data[0];
+}
+
+export function comparePasswords(password: string, hashed_password: string) {
+  return bcrypt.compareSync(password, hashed_password);
+}
