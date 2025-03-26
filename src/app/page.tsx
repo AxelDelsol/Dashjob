@@ -1,23 +1,26 @@
-import PublicPage from '@/components/shared/public-pages';
-import { MoveRight } from 'lucide-react';
+import PublicPage from "@/components/shared/public-pages";
+import { MoveRight } from "lucide-react";
 import { Lusitana } from "next/font/google";
-import Image from 'next/image';
+import Image from "next/image";
 import Link from "next/link";
 
 const lusitana = Lusitana({
-  subsets: ['latin'],
-  weight: ['400', '700']
-})
+  subsets: ["latin"],
+  weight: ["400", "700"],
+});
 
 export default function Page() {
   return (
     <PublicPage>
       <div className="mt-4 flex flex-col gap-4 md:flex-row">
         <div className="flex flex-col gap-6 rounded-lg bg-gray-50 px-6 py-10 md:w-2/5 md:px-20">
-          <p className={`${lusitana.className} text-xl text-gray-800 md:text-3xl md:leading-normal`}>
+          <p
+            className={`${lusitana.className} text-xl text-gray-800 md:text-3xl md:leading-normal`}
+          >
             <strong>Bienvenue sur Dashjob.</strong>
             <br />
-            L&apos;application qui vous aide à organiser votre recherche d&apos;emploi.
+            L&apos;application qui vous aide à organiser votre recherche
+            d&apos;emploi.
           </p>
           <Link
             href="/signin"
@@ -45,5 +48,5 @@ export default function Page() {
         </div>
       </div>
     </PublicPage>
-  )
+  );
 }

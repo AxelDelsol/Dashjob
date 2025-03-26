@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 
 import {
   ColumnDef,
@@ -11,11 +11,11 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  useReactTable
-} from "@tanstack/react-table"
+  useReactTable,
+} from "@tanstack/react-table";
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -23,23 +23,23 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
-import { Application } from "@/lib/definitions"
-import { useRouter } from "next/navigation"
+} from "@/components/ui/table";
+import { Application } from "@/lib/definitions";
+import { useRouter } from "next/navigation";
 
 interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[]
-  data: TData[]
+  columns: ColumnDef<TData, TValue>[];
+  data: TData[];
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
-  const [sorting, setSorting] = React.useState<SortingState>([])
+  const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  )
+    [],
+  );
   const table = useReactTable({
     data,
     columns,
@@ -53,9 +53,9 @@ export function DataTable<TData, TValue>({
       sorting,
       columnFilters,
     },
-  })
+  });
 
-  const router = useRouter()
+  const router = useRouter();
 
   return (
     <>
@@ -69,15 +69,18 @@ export function DataTable<TData, TValue>({
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 return (
-                  <TableHead key={header.id} className="text-lg font-bold bg-gray-200">
+                  <TableHead
+                    key={header.id}
+                    className="text-lg font-bold bg-gray-200"
+                  >
                     {header.isPlaceholder
                       ? null
                       : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        )}
                   </TableHead>
-                )
+                );
               })}
             </TableRow>
           ))}
@@ -89,8 +92,8 @@ export function DataTable<TData, TValue>({
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
                 onClick={() => {
-                  const application = row.original as Application
-                  router.push(`/applications/${application.id}`)
+                  const application = row.original as Application;
+                  router.push(`/applications/${application.id}`);
                 }}
                 className="cursor-pointer"
               >
@@ -112,7 +115,7 @@ export function DataTable<TData, TValue>({
       </Table>
       <Pagination table={table} />
     </>
-  )
+  );
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -126,7 +129,7 @@ function Search({ table }: { table: any }) {
       }
       className="max-w-xs"
     />
-  )
+  );
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -150,5 +153,5 @@ function Pagination({ table }: { table: any }) {
         Suivant
       </Button>
     </div>
-  )
+  );
 }

@@ -28,25 +28,22 @@ export default async function Page(props: { params: Promise<{ id: number }> }) {
         <p>{formatDate(application.application_date)}</p>
       </Section>
       <Section title="Salaire annuel brut">
-        {application.annual_salary &&
-          <p>{`${application.annual_salary} €`}</p>
-        }
+        {application.annual_salary && <p>{`${application.annual_salary} €`}</p>}
       </Section>
       <Section title="Informations additionnelles">
-        {application.description &&
+        {application.description && (
           <p className="whitespace-pre-wrap">{application.description}</p>
-        }
+        )}
       </Section>
     </main>
-  )
+  );
 }
 
 function Section(props: React.PropsWithChildren<{ title: string }>) {
   return (
     <div className="p-1">
       <h2 className="text-xl font-semibold">{props.title}</h2>
-      <div className="p-1 ml-4">{props.children || '-'}</div>
+      <div className="p-1 ml-4">{props.children || "-"}</div>
     </div>
-  )
-
+  );
 }

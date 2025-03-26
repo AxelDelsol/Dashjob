@@ -8,14 +8,12 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
 
-import {
-  Button
-} from '@/components/ui/button'
+import { Button } from "@/components/ui/button";
 
-import { Table } from "lucide-react"
-import Link from "next/link"
+import { Table } from "lucide-react";
+import Link from "next/link";
 
 // Menu items.
 const items = [
@@ -29,7 +27,7 @@ const items = [
   //   url: "#",
   //   icon: CalendarCheck,
   // }
-]
+];
 
 export function DashboardSidebar() {
   return (
@@ -59,5 +57,5 @@ export function DashboardSidebar() {
         </form>
       </SidebarFooter>
     </Sidebar>
-  )
+  );
 }

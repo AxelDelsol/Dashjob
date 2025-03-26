@@ -1,10 +1,9 @@
-
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
+  CardTitle,
 } from "@/components/ui/card";
 
 import PublicPage from "@/components/shared/public-pages";
@@ -16,12 +15,15 @@ export default function Page() {
       <Card className="container mx-auto w-[750px] p-6">
         <CardHeader>
           <CardTitle>Inscription</CardTitle>
-          <CardDescription>L&apos;administrateur validera votre compte avant de pouvoir vous connecter.</CardDescription>
+          <CardDescription>
+            L&apos;administrateur validera votre compte avant de pouvoir vous
+            connecter.
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <SignUpForm />
         </CardContent>
       </Card>
     </PublicPage>
-  )
+  );
 }

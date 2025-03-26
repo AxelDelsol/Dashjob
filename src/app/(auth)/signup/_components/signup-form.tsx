@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -7,20 +7,22 @@ import { signUpAction, SignUpError } from "@/lib/actions";
 import Link from "next/link";
 import { useActionState } from "react";
 
-
 export default function SignUpForm() {
   const initialState: SignUpError = {};
-  const [state, formAction, isPending] = useActionState(signUpAction, initialState);
+  const [state, formAction, isPending] = useActionState(
+    signUpAction,
+    initialState,
+  );
 
   return (
     <form action={formAction} aria-describedby="form-error">
       <div className="grid w-full items-center gap-4">
         <div id="form-error" aria-live="polite" aria-atomic="true">
-          {state.message &&
+          {state.message && (
             <p className="mt-2 text-red-500" key={state.message}>
               {state.message}
             </p>
-          }
+          )}
         </div>
 
         <div className="mb-4">
@@ -40,14 +42,21 @@ export default function SignUpForm() {
         <div className="mb-4">
           <div className="flex flex-col space-y-1.5">
             <Label htmlFor="password">Mot de passe</Label>
-            <p className="text-muted-foreground text-sm">Saisissez au moins 13 caractères, dont une minuscule, une majuscule, un chiffre et un caractère spécial.</p>
+            <p className="text-muted-foreground text-sm">
+              Saisissez au moins 13 caractères, dont une minuscule, une
+              majuscule, un chiffre et un caractère spécial.
+            </p>
             <Input
               type="password"
               name="password"
               id="password"
-              aria-describedby="password-error" />
+              aria-describedby="password-error"
+            />
           </div>
-          <ErrorText id="password-error" error_messages={state?.errors?.password} />
+          <ErrorText
+            id="password-error"
+            error_messages={state?.errors?.password}
+          />
         </div>
 
         <div className="mb-4">
@@ -57,16 +66,24 @@ export default function SignUpForm() {
               type="password"
               name="confirmedPassword"
               id="confirmedPassword"
-              aria-describedby="confirmedPassword-error" />
+              aria-describedby="confirmedPassword-error"
+            />
           </div>
-          <ErrorText id="confirmedPassword-error" error_messages={state?.errors?.confirmedPassword} />
+          <ErrorText
+            id="confirmedPassword-error"
+            error_messages={state?.errors?.confirmedPassword}
+          />
         </div>
 
         <div className="flex items-center justify-evenly px-6 [.border-t]:pt-6">
           <Button variant="outline" asChild>
             <Link href="/">Annuler</Link>
           </Button>
-          <Button type="submit" disabled={isPending} className="bg-blue-500 text-white transition-colors hover:bg-blue-400">
+          <Button
+            type="submit"
+            disabled={isPending}
+            className="bg-blue-500 text-white transition-colors hover:bg-blue-400"
+          >
             {isPending ? "Inscription..." : "S'inscrire"}
           </Button>
         </div>
@@ -75,7 +92,13 @@ export default function SignUpForm() {
   );
 }
 
-function ErrorText({ id, error_messages }: { id: string, error_messages?: string[] }) {
+function ErrorText({
+  id,
+  error_messages,
+}: {
+  id: string;
+  error_messages?: string[];
+}) {
   if (error_messages) {
     return (
       <div id={id} aria-live="polite" aria-atomic="true">
@@ -85,7 +108,6 @@ function ErrorText({ id, error_messages }: { id: string, error_messages?: string
           </p>
         ))}
       </div>
-    )
+    );
   }
-
 }
