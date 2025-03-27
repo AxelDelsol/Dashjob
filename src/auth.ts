@@ -3,6 +3,7 @@ import { comparePasswords, getValidUserByEmail } from "@/lib/users";
 import NextAuth, { DefaultSession } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 
+import { authConfig } from "@/auth.config";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { JWT } from "next-auth/jwt";
 
@@ -22,12 +23,12 @@ declare module "next-auth" {
 declare module "next-auth/jwt" {
   /** Returned by the `jwt` callback and `auth`, when using JWT sessions */
   interface JWT {
-    /** OpenID ID Token */
     user_id: number;
   }
 }
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  ...authConfig,
   providers: [
     Credentials({
       credentials: {
@@ -58,6 +59,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     }),
   ],
   callbacks: {
+    ...authConfig.callbacks,
     jwt({ token, user }) {
       if (user) {
         // User is available during sign-in
