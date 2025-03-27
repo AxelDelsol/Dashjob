@@ -2,20 +2,15 @@ import NextAuth, { DefaultSession } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 
 declare module "next-auth" {
+  interface User {
+    user_id: number;
+  }
+
   /**
    * Returned by `auth`, `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
    */
   interface Session {
-    user: {
-      /** The user's postal address. */
-      user_id: number;
-      /**
-       * By default, TypeScript merges new interface properties and overwrites existing ones.
-       * In this case, the default session user properties will be overwritten,
-       * with the new ones defined above. To keep the default session user properties,
-       * you need to add them back into the newly declared interface.
-       */
-    } & DefaultSession["user"];
+    user: User & DefaultSession["user"];
   }
 }
 
@@ -45,7 +40,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     jwt({ token, user }) {
       if (user) {
         // User is available during sign-in
-        token.user_id = user.user_id;
+        token.user_id = user.user_id as number;
       }
       return token;
     },
@@ -54,7 +49,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         ...session,
         user: {
           ...session.user,
-          user_id: token.id,
+          user_id: token.user_id as number,
         },
       };
     },
