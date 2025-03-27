@@ -14,7 +14,7 @@ export async function createUser(
   `;
 }
 
-export async function getUserByEmail(email: string) {
+export async function getValidUserByEmail(email: string) {
   const data = await sql<User[]>`
       SELECT
         users.id,
@@ -22,7 +22,7 @@ export async function getUserByEmail(email: string) {
         users.hashed_password,
         users.status
       FROM users
-      WHERE users.email = ${email}`;
+      WHERE users.email = ${email} and users.status = 'validated'`;
 
   return data[0];
 }

@@ -1,15 +1,14 @@
 "use client";
 
-import ErrorText from "@/components/shared/error-text";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { signInAction, SignInError } from "@/lib/actions/sign-in";
+import { signInAction } from "@/lib/actions/sign-in";
 import Link from "next/link";
 import { useActionState } from "react";
 
 export default function SignInForm() {
-  const initialState: SignInError = {};
+  const initialState: string = "";
   const [state, formAction, isPending] = useActionState(
     signInAction,
     initialState,
@@ -19,9 +18,9 @@ export default function SignInForm() {
     <form action={formAction} aria-describedby="form-error">
       <div className="grid w-full items-center gap-4">
         <div id="form-error" aria-live="polite" aria-atomic="true">
-          {state.message && (
-            <p className="mt-2 text-red-500" key={state.message}>
-              {state.message}
+          {state && (
+            <p className="mt-2 text-red-500" key={state}>
+              {state}
             </p>
           )}
         </div>
@@ -37,7 +36,6 @@ export default function SignInForm() {
               placeholder="email@example.com"
             />
           </div>
-          <ErrorText id="email-error" error_messages={state?.errors?.email} />
         </div>
 
         <div className="mb-4">
@@ -50,10 +48,6 @@ export default function SignInForm() {
               aria-describedby="password-error"
             />
           </div>
-          <ErrorText
-            id="password-error"
-            error_messages={state?.errors?.password}
-          />
         </div>
 
         <div className="flex items-center justify-evenly px-6 [.border-t]:pt-6">

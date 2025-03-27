@@ -1,9 +1,8 @@
+export const INVALID_CREDENTIALS =
+  "Les identifiants sont invalides ou votre compte n'est pas encore validé";
 export const UNKNOWN_ERROR =
   "Une erreur s'est produite, merci de retenter plus tard";
 export const INVALID_FORM = "Le formulaire n'est pas valide";
-export const UNKNOWN_EMAIL = "L'adresse email n'existe pas";
-export const USER_NOT_VALIDATED = "L'utilisateur n'est pas encore validé";
-export const INVALID_PASSWORD = "Le mot de passe est incorrect";
 export const REQUIRED_FIELD = "Le champ est obligatoire";
 export const INVALID_EMAIL = "L'adresse email invalide";
 export const EMAIL_ALREADY_TAKEN = "L'adresse email existe déjà";
