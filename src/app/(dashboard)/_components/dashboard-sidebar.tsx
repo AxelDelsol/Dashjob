@@ -12,6 +12,7 @@ import {
 
 import { Button } from "@/components/ui/button";
 
+import { signOut } from "@/auth";
 import { Table } from "lucide-react";
 import Link from "next/link";
 
@@ -52,7 +53,12 @@ export function DashboardSidebar() {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
-        <form action="">
+        <form
+          action={async () => {
+            "use server";
+            await signOut({ redirectTo: "/" });
+          }}
+        >
           <Button variant="outline">Se déconnecter</Button>
         </form>
       </SidebarFooter>
