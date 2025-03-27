@@ -6,8 +6,8 @@ import {
   PASSWORD_NO_SPECIAL,
   PASSWORD_NO_UPPER,
   PASSWORD_TOO_SHORT,
-  UserCreate,
-} from "@/lib/users";
+} from "@/lib/error_messages";
+import { UserCreate } from "@/lib/schemas";
 import { z } from "zod";
 
 describe("UserCreate schema", () => {

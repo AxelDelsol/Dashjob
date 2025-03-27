@@ -3,11 +3,14 @@
 import { redirect } from "next/navigation";
 import postgres from "postgres";
 
-import { UNIQUE_VIOLATION } from "./db";
-import { createUser, EMAIL_ALREADY_TAKEN, UserCreate } from "./users";
-
-const INVALID_FORM = "Le formulaire n'est pas valide";
-const UNKNOWN_ERROR = "Une erreur s'est produite, merci de retenter plus tard";
+import { UNIQUE_VIOLATION } from "@/lib/db";
+import {
+  EMAIL_ALREADY_TAKEN,
+  INVALID_FORM,
+  UNKNOWN_ERROR,
+} from "@/lib/error_messages";
+import { UserCreate } from "@/lib/schemas";
+import { createUser } from "@/lib/users";
 
 export type SignUpError = {
   message?: string;
