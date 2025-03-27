@@ -35,6 +35,7 @@ export default function SignUpForm() {
               id="email"
               aria-describedby="email-error"
               placeholder="email@example.com"
+              required
             />
           </div>
           <ErrorText id="email-error" error_messages={state?.errors?.email} />
@@ -52,6 +53,7 @@ export default function SignUpForm() {
               name="password"
               id="password"
               aria-describedby="password-error"
+              required
             />
           </div>
           <ErrorText
@@ -68,6 +70,7 @@ export default function SignUpForm() {
               name="confirmedPassword"
               id="confirmedPassword"
               aria-describedby="confirmedPassword-error"
+              required
             />
           </div>
           <ErrorText

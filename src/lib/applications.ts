@@ -1,5 +1,5 @@
-import sql from "./db";
-import { Application } from "./definitions";
+import sql from "@/lib/db";
+import { Application } from "@/lib/definitions";
 
 export async function fetchApplications() {
   try {

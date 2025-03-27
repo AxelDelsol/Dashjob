@@ -1,32 +1,74 @@
 "use server";
 
+import {
+  INVALID_FORM,
+  INVALID_PASSWORD,
+  UNKNOWN_EMAIL,
+  UNKNOWN_ERROR,
+  USER_NOT_VALIDATED,
+} from "@/lib/error_messages";
+import { SignInSchema } from "@/lib/schemas";
+import { comparePasswords, getUserByEmail } from "@/lib/users";
 import { redirect } from "next/navigation";
-import { comparePasswords, getUserByEmail } from "../users";
+import { signIn } from "../../auth";
 
 export type SignInError = {
-  email?: string;
-  password?: string;
+  message?: string;
+  errors?: {
+    email?: string | string[];
+    password?: string | string[];
+  };
 };
 
-const UNKNOWN_EMAIL = "L'adresse email n'existe pas";
-const USER_NOT_VALIDATED = "L'utilisateur n'est pas encore validé";
-const INVALID_PASSWORD = "Le mot de passe est incorrect";
-
 export async function signInAction(prevState: SignInError, formData: FormData) {
-  const data = Object.fromEntries(formData.entries());
+  const validatedFields = SignInSchema.safeParse({
+    email: formData.get("email"),
+    password: formData.get("password"),
+  });
 
-  const user = await getUserByEmail(data.email.toString());
+  if (!validatedFields.success) {
+    return {
+      message: INVALID_FORM,
+      errors: validatedFields.error.flatten().fieldErrors,
+    };
+  }
+
+  const { email, password } = validatedFields.data;
+
+  const user = await getUserByEmail(email);
 
   if (!user) {
-    return { email: UNKNOWN_EMAIL };
+    return {
+      message: INVALID_FORM,
+      errors: { email: UNKNOWN_EMAIL },
+    };
   }
 
   if (!(user.status === "validated")) {
-    return { email: USER_NOT_VALIDATED };
+    return {
+      message: INVALID_FORM,
+      errors: { email: USER_NOT_VALIDATED },
+    };
   }
 
-  if (!comparePasswords(data.password.toString(), user.hashed_password)) {
-    return { password: INVALID_PASSWORD };
+  if (!comparePasswords(password, user.hashed_password)) {
+    return {
+      message: INVALID_FORM,
+      errors: { password: INVALID_PASSWORD },
+    };
   }
+
+  try {
+    await signIn("credentials", {
+      email: email,
+      user_id: user.id,
+      redirect: false,
+    });
+  } catch {
+    return {
+      message: UNKNOWN_ERROR,
+    };
+  }
+
   redirect("/applications");
 }
