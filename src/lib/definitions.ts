@@ -1,5 +1,6 @@
 export type Application = {
   id: number;
+  user_id: number;
   title: string;
   company_name: string;
   status: ApplicationStatus;

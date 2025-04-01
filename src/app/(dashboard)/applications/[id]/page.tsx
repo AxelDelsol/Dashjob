@@ -1,12 +1,18 @@
+import { auth } from "@/auth";
 import Status from "@/components/shared/status";
 import { fetchApplicationById } from "@/lib/applications";
 import { formatDate } from "@/lib/utils";
-import { notFound } from "next/navigation";
+import { notFound, unauthorized } from "next/navigation";
 
 export default async function Page(props: { params: Promise<{ id: number }> }) {
+  const session = await auth();
+  const user = session?.user;
+
+  if (!user) return unauthorized();
+
   const params = await props.params;
   const id = params.id;
-  const application = await fetchApplicationById(id);
+  const application = await fetchApplicationById(user.user_id, id);
 
   if (!application) {
     notFound();

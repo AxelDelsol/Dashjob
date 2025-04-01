@@ -1,17 +1,18 @@
+import { auth } from "@/auth";
 import { fetchApplications } from "@/lib/applications";
+import { unauthorized } from "next/navigation";
 import { columns } from "./_components/columns";
 import { DataTable } from "./_components/data-table";
 
 export const dynamic = "force-dynamic";
 
 export default async function Page() {
-  const applications = await fetchApplications();
+  const session = await auth();
+  const user = session?.user;
 
-  // const session = await auth();
+  if (!user) return unauthorized();
 
-  // if (!session?.user) return null;
-  // console.log(session.user);
-
+  const applications = await fetchApplications(user.user_id);
   return (
     <div className="py-10">
       <DataTable columns={columns} data={applications} />
