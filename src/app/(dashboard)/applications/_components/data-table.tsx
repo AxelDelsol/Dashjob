@@ -25,6 +25,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Application } from "@/lib/definitions";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 interface DataTableProps<TData, TValue> {
@@ -61,7 +62,12 @@ export function DataTable<TData, TValue>({
     <>
       <div className="flex-row flex pb-4 align-middle gap-6">
         <Search table={table} />
-        {/* <Button>Ajouter une candidature</Button> */}
+        <Button
+          asChild
+          className="bg-blue-500 text-white transition-colors hover:bg-blue-400"
+        >
+          <Link href="/applications/create">Ajouter une candidature</Link>
+        </Button>
       </div>
       <Table className="rounded-md border">
         <TableHeader>
