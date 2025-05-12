@@ -1,12 +1,18 @@
+import { auth } from "@/auth";
 import Status from "@/components/shared/status";
-import { fetchApplicationById } from "@/lib/applications";
-import { formatDate } from "@/lib/utils";
-import { notFound } from "next/navigation";
+import { findUserApplicationById } from "@/lib/applications/get-applications";
+import formatDate from "@/lib/shared/format-date";
+import { notFound, unauthorized } from "next/navigation";
 
 export default async function Page(props: { params: Promise<{ id: number }> }) {
+  const session = await auth();
+  const user = session?.user;
+
+  if (!user) return unauthorized();
+
   const params = await props.params;
   const id = params.id;
-  const application = await fetchApplicationById(id);
+  const application = await findUserApplicationById(user.userId, id);
 
   if (!application) {
     notFound();
@@ -22,13 +28,13 @@ export default async function Page(props: { params: Promise<{ id: number }> }) {
         <p>{application.title}</p>
       </Section>
       <Section title="Entreprise">
-        <p>{application.company_name}</p>
+        <p>{application.companyName}</p>
       </Section>
       <Section title="Date de candidature">
-        <p>{formatDate(application.application_date)}</p>
+        <p>{formatDate(application.applicationDate)}</p>
       </Section>
       <Section title="Salaire annuel brut">
-        {application.annual_salary && <p>{`${application.annual_salary} €`}</p>}
+        {application.annualSalary && <p>{`${application.annualSalary} €`}</p>}
       </Section>
       <Section title="Informations additionnelles">
         {application.description && (

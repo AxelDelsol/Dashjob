@@ -24,7 +24,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Application } from "@/lib/definitions";
+import { Application } from "@/lib/applications/definitions";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 interface DataTableProps<TData, TValue> {
@@ -61,7 +62,12 @@ export function DataTable<TData, TValue>({
     <>
       <div className="flex-row flex pb-4 align-middle gap-6">
         <Search table={table} />
-        {/* <Button>Ajouter une candidature</Button> */}
+        <Button
+          asChild
+          className="bg-blue-500 text-white transition-colors hover:bg-blue-400"
+        >
+          <Link href="/applications/create">Ajouter une candidature</Link>
+        </Button>
       </div>
       <Table className="rounded-md border">
         <TableHeader>
@@ -107,7 +113,7 @@ export function DataTable<TData, TValue>({
           ) : (
             <TableRow>
               <TableCell colSpan={columns.length} className="h-24 text-center">
-                Pas de résultats.
+                Pas de résultats
               </TableCell>
             </TableRow>
           )}
@@ -122,10 +128,10 @@ export function DataTable<TData, TValue>({
 function Search({ table }: { table: any }) {
   return (
     <Input
-      placeholder="Filtrer par titre ..."
-      value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
+      placeholder="Filtrer par entreprise ..."
+      value={(table.getColumn("companyName")?.getFilterValue() as string) ?? ""}
       onChange={(event) =>
-        table.getColumn("title")?.setFilterValue(event.target.value)
+        table.getColumn("companyName")?.setFilterValue(event.target.value)
       }
       className="max-w-xs"
     />

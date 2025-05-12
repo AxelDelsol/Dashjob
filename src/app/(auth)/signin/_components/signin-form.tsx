@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { signInAction } from "@/lib/actions/sign-in";
+import { signInAction } from "@/lib/users/sign-in/server-actions";
 import Link from "next/link";
 import { useActionState } from "react";
 

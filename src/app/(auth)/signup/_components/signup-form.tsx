@@ -4,12 +4,15 @@ import ErrorText from "@/components/shared/error-text";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { signUpAction, SignUpError } from "@/lib/actions/sign-up";
+import {
+  signUpAction,
+  SignUpActionState,
+} from "@/lib/users/sign-up/server-actions";
 import Link from "next/link";
 import { useActionState } from "react";
 
 export default function SignUpForm() {
-  const initialState: SignUpError = {};
+  const initialState: SignUpActionState = { data: {}, errors: {} };
   const [state, formAction, isPending] = useActionState(
     signUpAction,
     initialState,
@@ -18,14 +21,6 @@ export default function SignUpForm() {
   return (
     <form action={formAction} aria-describedby="form-error">
       <div className="grid w-full items-center gap-4">
-        <div id="form-error" aria-live="polite" aria-atomic="true">
-          {state.message && (
-            <p className="mt-2 text-red-500" key={state.message}>
-              {state.message}
-            </p>
-          )}
-        </div>
-
         <div className="mb-4">
           <div className="flex flex-col space-y-1.5">
             <Label htmlFor="email">Adresse email</Label>
@@ -35,10 +30,11 @@ export default function SignUpForm() {
               id="email"
               aria-describedby="email-error"
               placeholder="email@example.com"
+              defaultValue={state.data?.email}
               required
             />
           </div>
-          <ErrorText id="email-error" error_messages={state?.errors?.email} />
+          <ErrorText id="email-error" error_messages={state.errors?.email} />
         </div>
 
         <div className="mb-4">
@@ -53,12 +49,13 @@ export default function SignUpForm() {
               name="password"
               id="password"
               aria-describedby="password-error"
+              defaultValue={state.data?.password}
               required
             />
           </div>
           <ErrorText
             id="password-error"
-            error_messages={state?.errors?.password}
+            error_messages={state.errors?.password}
           />
         </div>
 
@@ -70,12 +67,13 @@ export default function SignUpForm() {
               name="confirmedPassword"
               id="confirmedPassword"
               aria-describedby="confirmedPassword-error"
+              defaultValue={state.data?.confirmedPassword}
               required
             />
           </div>
           <ErrorText
             id="confirmedPassword-error"
-            error_messages={state?.errors?.confirmedPassword}
+            error_messages={state.errors?.confirmedPassword}
           />
         </div>
 

@@ -1,16 +1,26 @@
-version: "3.8"
-
 services:
-  db:
+  development:
     image: postgres:17.4-alpine
     environment:
       - POSTGRES_USER=user
       - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=database
+      - POSTGRES_DB=development
     ports:
       - 5432:5432
-    volumes: 
-      - ./scripts/init.sql:/docker-entrypoint-initdb.d/docker_postgres_init.sql
+    volumes:
+      - ./scripts/000-schemas.sql:/docker-entrypoint-initdb.d/000-schemas.sql
+      - ./scripts/001-seed.sql:/docker-entrypoint-initdb.d/001-seed.sql
+
+  test:
+    image: postgres:17.4-alpine
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=test
+    ports:
+      - 5433:5432
+    volumes:
+      - ./scripts/000-schemas.sql:/docker-entrypoint-initdb.d/000-schemas.sql
 
   adminer:
     image: adminer
