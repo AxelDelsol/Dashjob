@@ -24,7 +24,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Application } from "@/lib/definitions";
+import { Application } from "@/lib/applications/definitions";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -128,10 +128,10 @@ export function DataTable<TData, TValue>({
 function Search({ table }: { table: any }) {
   return (
     <Input
-      placeholder="Filtrer par titre ..."
-      value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
+      placeholder="Filtrer par entreprise ..."
+      value={(table.getColumn("companyName")?.getFilterValue() as string) ?? ""}
       onChange={(event) =>
-        table.getColumn("title")?.setFilterValue(event.target.value)
+        table.getColumn("companyName")?.setFilterValue(event.target.value)
       }
       className="max-w-xs"
     />

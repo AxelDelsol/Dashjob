@@ -1,15 +1,15 @@
 "use server";
 
-import { INVALID_CREDENTIALS, UNKNOWN_ERROR } from "@/lib/error_messages";
+import { signIn } from "@/auth";
+import { INVALID_CREDENTIALS } from "@/lib/shared/error_messages";
 import { AuthError } from "next-auth";
 import { redirect } from "next/navigation";
-import { signIn } from "../../auth";
 
 export async function signInAction(prevState: string, formData: FormData) {
   try {
     await signIn("credentials", {
-      email: formData.get("email") as string,
-      password: formData.get("password") as string,
+      email: formData.get("email")?.toString(),
+      password: formData.get("password")?.toString(),
       redirect: false,
     });
   } catch (error) {
@@ -17,7 +17,7 @@ export async function signInAction(prevState: string, formData: FormData) {
       return INVALID_CREDENTIALS;
     }
 
-    return UNKNOWN_ERROR;
+    throw error;
   }
 
   redirect("/applications");

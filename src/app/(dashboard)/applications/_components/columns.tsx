@@ -1,25 +1,24 @@
 "use client";
 
-import { Application } from "@/lib/definitions";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
 import Status from "@/components/shared/status";
-import { formatDate } from "@/lib/utils";
-
+import { Application } from "@/lib/applications/definitions";
+import formatDate from "@/lib/shared/format-date";
 export const columns: ColumnDef<Application>[] = [
   {
     accessorKey: "title",
     header: "Titre",
   },
   {
-    accessorKey: "company_name",
+    accessorKey: "companyName",
     header: "Entreprise",
   },
   {
-    accessorKey: "application_date",
+    accessorKey: "applicatioDate",
     header: ({ column }) => {
       return (
         <Button
@@ -35,7 +34,7 @@ export const columns: ColumnDef<Application>[] = [
     cell: ({ row }) => {
       const application = row.original;
       return (
-        <div className="pl-10">{formatDate(application.application_date)}</div>
+        <div className="pl-10">{formatDate(application.applicationDate)}</div>
       );
     },
   },

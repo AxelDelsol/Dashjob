@@ -1,12 +1,12 @@
 import { Badge } from "@/components/ui/badge";
-import { ApplicationStatus } from "@/lib/definitions";
+import { ApplicationStatus } from "@/lib/applications/definitions";
 import clsx from "clsx";
 
 const statusToText = new Map<ApplicationStatus, string>([
-  ["applied", "Envoyée"],
-  ["pending", "En attente"],
-  ["rejected", "Refusée"],
-  ["accepted", "Acceptée"],
+  [ApplicationStatus.Applied, "Envoyée"],
+  [ApplicationStatus.Pending, "En attente"],
+  [ApplicationStatus.Rejected, "Refusée"],
+  [ApplicationStatus.Accepted, "Acceptée"],
 ]);
 
 export default function Status({ status }: { status: ApplicationStatus }) {
