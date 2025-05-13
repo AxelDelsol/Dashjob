@@ -18,7 +18,7 @@ export const columns: ColumnDef<Application>[] = [
     header: "Entreprise",
   },
   {
-    accessorKey: "applicatioDate",
+    accessorKey: "applicationDate",
     header: ({ column }) => {
       return (
         <Button
