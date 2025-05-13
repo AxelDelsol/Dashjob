@@ -6,16 +6,17 @@ export function expectInvalidField<T>(
   ...errors: string[]
 ) {
   expect(actionState.data[field]).toBeUndefined();
+  expect(actionState.parsedData).toBeUndefined();
   for (const error of errors) {
     expect(actionState.errors[field]).toContain(error);
   }
 }
 
-export function expectValidField<T, Key extends keyof ActionState<T>["data"]>(
+export function expectValidField<T, Key extends keyof T>(
   actionState: ActionState<T>,
   field: Key,
-  value: ActionState<T>["data"][Key],
+  value: T[Key],
 ) {
-  expect(actionState.data[field]).toBe(value);
+  expect(actionState.parsedData![field]).toBe(value);
   expect(actionState.errors[field]).toBeUndefined();
 }

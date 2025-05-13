@@ -4,6 +4,7 @@ export type ActionState<T> = {
   data: {
     [K in keyof T]?: string;
   };
+  parsedData?: T;
   errors: {
     [K in keyof T]?: string[];
   };
@@ -32,7 +33,8 @@ export async function serverAction<
       actionState.data[invalidField as keyof T] = undefined;
     }
   } else {
-    if (onSuccess) await onSuccess(actionState, result.data);
+    actionState.parsedData = result.data;
+    if (onSuccess) await onSuccess(actionState, actionState.parsedData!);
   }
 
   return actionState;

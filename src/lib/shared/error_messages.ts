@@ -1,5 +1,3 @@
-import { z } from "zod";
-
 export const REQUIRED_FIELD = "Le champ est obligatoire";
 export const INVALID_FIELD = "Le champ est invalide";
 
@@ -20,5 +18,3 @@ export const PASSWORD_NO_DIGIT =
 export const PASSWORD_NO_SPECIAL =
   "Le mot de passe doit contenir au moins un caractère spécial (exemple: ! @ # $ % ^ & * ( ) .)";
 export const PASSWORD_INVALID_MATCH = "Les mots de passe sont différents";
-
-export const requiredString = z.string({ required_error: REQUIRED_FIELD });
