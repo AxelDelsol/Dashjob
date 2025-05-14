@@ -166,7 +166,7 @@ export default function Page() {
           <Button
             type="submit"
             disabled={isPending}
-            className="bg-blue-500 text-white transition-colors hover:bg-blue-400"
+            className="cursor-pointer bg-blue-500 text-white transition-colors hover:bg-blue-400"
           >
             {isPending ? "Création..." : "Créer la candidature"}
           </Button>

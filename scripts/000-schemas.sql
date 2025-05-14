@@ -13,7 +13,7 @@ CREATE TABLE applications (
   company_name VARCHAR(50) NOT NULL,
   application_date DATE NOT NULL DEFAULT CURRENT_DATE,
   status application_status DEFAULT 'applied',
-  description VARCHAR(200),
+  description VARCHAR(500),
   annual_salary INT,
 
   user_id BIGINT REFERENCES users ON DELETE CASCADE NOT NULL 
