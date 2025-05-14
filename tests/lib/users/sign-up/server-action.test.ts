@@ -14,9 +14,20 @@ import {
   expectValidField,
 } from "../../server-action-helpers";
 
+describe("server action - valid form", () => {
+  it("does not contain any errors", async () => {
+    const formData = createValidFormData();
+
+    const actionState = await action(formData);
+
+    expect(actionState.errors).toEqual({});
+  });
+});
+
 describe("server action - email", () => {
   it("rejects an empty email", async () => {
-    const formData = new FormData();
+    const formData = createValidFormData();
+    formData.delete("email");
 
     const actionState = await action(formData);
 
@@ -24,8 +35,8 @@ describe("server action - email", () => {
   });
 
   it("rejects an invalid email", async () => {
-    const formData = new FormData();
-    formData.append("email", "invalid-dot-com");
+    const formData = createValidFormData();
+    formData.set("email", "invalid-dot-com");
 
     const actionState = await action(formData);
 
@@ -33,8 +44,8 @@ describe("server action - email", () => {
   });
 
   it("accepts a valid email", async () => {
-    const formData = new FormData();
-    formData.append("email", "test@example.com");
+    const formData = createValidFormData();
+    formData.set("email", "test@example.com");
 
     const actionState = await action(formData);
 
@@ -44,7 +55,8 @@ describe("server action - email", () => {
 
 describe("server action - password", () => {
   it("rejects an empty password", async () => {
-    const formData = new FormData();
+    const formData = createValidFormData();
+    formData.delete("password");
 
     const actionState = await action(formData);
 
@@ -52,8 +64,7 @@ describe("server action - password", () => {
   });
 
   it("rejects passwords with less than 13 characters", async () => {
-    const formData = new FormData();
-    formData.append("password", "short");
+    const formData = createValidFormData("short");
 
     const actionState = await action(formData);
 
@@ -61,8 +72,7 @@ describe("server action - password", () => {
   });
 
   it("rejects passwords without lowercase characters", async () => {
-    const formData = new FormData();
-    formData.append("password", "UPPER");
+    const formData = createValidFormData("UPPER");
 
     const actionState = await action(formData);
 
@@ -70,8 +80,7 @@ describe("server action - password", () => {
   });
 
   it("rejects passwords without uppercase characters", async () => {
-    const formData = new FormData();
-    formData.append("password", "lower");
+    const formData = createValidFormData("lower");
 
     const actionState = await action(formData);
 
@@ -79,8 +88,7 @@ describe("server action - password", () => {
   });
 
   it("rejects passwords without digits", async () => {
-    const formData = new FormData();
-    formData.append("password", "lowerUpP");
+    const formData = createValidFormData("lowerUpP");
 
     const actionState = await action(formData);
 
@@ -88,8 +96,7 @@ describe("server action - password", () => {
   });
 
   it("rejects passwords without special characters", async () => {
-    const formData = new FormData();
-    formData.append("password", "lowerUppeR12");
+    const formData = createValidFormData("lowerUppeR12");
 
     const actionState = await action(formData);
 
@@ -97,8 +104,7 @@ describe("server action - password", () => {
   });
 
   it("aggregates errors", async () => {
-    const formData = new FormData();
-    formData.append("password", "fOo");
+    const formData = createValidFormData("fOo");
 
     const actionState = await action(formData);
 
@@ -112,8 +118,7 @@ describe("server action - password", () => {
   });
 
   it("accepts complex passwords", async () => {
-    const formData = new FormData();
-    formData.append("password", "lowerUppeR12!");
+    const formData = createValidFormData("lowerUppeR12!");
 
     const actionState = await action(formData);
 
@@ -123,7 +128,8 @@ describe("server action - password", () => {
 
 describe("server action - confirmedPassword", () => {
   it("rejects an empty confirmedPassword", async () => {
-    const formData = new FormData();
+    const formData = createValidFormData();
+    formData.delete("confirmedPassword");
 
     const actionState = await action(formData);
 
@@ -131,9 +137,8 @@ describe("server action - confirmedPassword", () => {
   });
 
   it("rejects when password and confirmedPassword are different", async () => {
-    const formData = new FormData();
-    formData.append("password", "input123Output!");
-    formData.append("confirmedPassword", "not-input");
+    const formData = createValidFormData();
+    formData.set("confirmedPassword", formData.get("password") + "not-input");
 
     const actionState = await action(formData);
 
@@ -145,41 +150,22 @@ describe("server action - confirmedPassword", () => {
   });
 
   it("accepts when password and confirmedPassword are equals", async () => {
-    const formData = new FormData();
-    formData.append("password", "input");
-    formData.append("confirmedPassword", "input");
+    const formData = createValidFormData();
+    const password = formData.get("password");
+    formData.set("password", password + "foo");
+    formData.set("confirmedPassword", password + "foo");
 
     const actionState = await action(formData);
 
-    expectValidField(actionState, "confirmedPassword", "input");
+    expectValidField(actionState, "confirmedPassword", password + "foo");
   });
 });
 
-describe("server action - callback", () => {
-  it("does not call the callback on failure", async () => {
-    const formData = new FormData();
+function createValidFormData(password?: string) {
+  const formData = new FormData();
+  formData.set("email", "email@example.com");
+  formData.set("password", password || "pass2025Word!");
+  formData.set("confirmedPassword", password || "pass2025Word!");
 
-    let called = false;
-    const onSuccess = async () => {
-      called = true;
-    };
-
-    await action(formData, onSuccess);
-    expect(called).toBeFalsy();
-  });
-
-  it("calls the callback on success", async () => {
-    const formData = new FormData();
-    formData.append("email", "email@example.com");
-    formData.append("password", "pass2025Word!");
-    formData.append("confirmedPassword", "pass2025Word!");
-
-    let called = false;
-    const onSuccess = async () => {
-      called = true;
-    };
-
-    await action(formData, onSuccess);
-    expect(called).toBeTruthy();
-  });
-});
+  return formData;
+}

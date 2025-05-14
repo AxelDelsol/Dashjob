@@ -1,22 +1,19 @@
-import { REQUIRED_FIELD, requiredString } from "@/lib/shared/error_messages";
+import { REQUIRED_FIELD } from "@/lib/shared/error_messages";
 import { ActionState, serverAction } from "@/lib/shared/server-action";
+import { nonEmptyString, optionalNonEmptyString } from "@/lib/shared/zod-types";
 import { z } from "zod";
 import createApplication from "../create-application";
 import { ApplicationStatus } from "../definitions";
 
 const CreateApplicationSchema = z.object({
-  title: requiredString,
-  companyName: requiredString,
+  title: nonEmptyString,
+  companyName: nonEmptyString,
   status: z.nativeEnum(ApplicationStatus, {
     required_error: REQUIRED_FIELD,
   }),
-  applicationDate: requiredString.date(),
-  description: z.string().optional(),
-  annualSalary: z
-    .string()
-    .transform((value) => (value === "" ? undefined : value))
-    .optional()
-    .pipe(z.coerce.number().optional()),
+  applicationDate: nonEmptyString.pipe(z.string().date()),
+  description: optionalNonEmptyString,
+  annualSalary: optionalNonEmptyString.pipe(z.coerce.number().optional()),
 });
 
 type CreateApplicationData = z.infer<typeof CreateApplicationSchema>;

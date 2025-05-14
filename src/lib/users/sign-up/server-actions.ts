@@ -12,27 +12,27 @@ import {
   PASSWORD_NO_SPECIAL,
   PASSWORD_NO_UPPER,
   PASSWORD_TOO_SHORT,
-  requiredString,
 } from "@/lib/shared/error_messages";
 import {
   ActionState,
   containsErrors,
   serverAction,
 } from "@/lib/shared/server-action";
+import { nonEmptyString } from "@/lib/shared/zod-types";
 import { redirect } from "next/navigation";
 import postgres from "postgres";
 import createUser from "../create-user";
 import { UserStatus } from "../definitions";
 
 const EmailSchema = z.object({
-  email: requiredString.email({ message: INVALID_EMAIL }),
+  email: nonEmptyString.pipe(z.string().email({ message: INVALID_EMAIL })),
 });
 const PasswordSchema = z
   .object({
-    password: requiredString.superRefine((val, ctx) =>
+    password: nonEmptyString.superRefine((val, ctx) =>
       validatePassword(val, ctx),
     ),
-    confirmedPassword: requiredString,
+    confirmedPassword: nonEmptyString,
   })
   .refine((data) => data.password === data.confirmedPassword, {
     message: PASSWORD_INVALID_MATCH,
