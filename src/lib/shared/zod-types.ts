@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { ApplicationStatus } from "../applications/definitions";
 import { REQUIRED_FIELD } from "./error_messages";
 
 export const optionalNonEmptyString = z
@@ -29,3 +30,7 @@ export const nonEmptyString = z
 
     return trimmedVal;
   });
+
+export const applicationStatus = z.nativeEnum(ApplicationStatus, {
+  required_error: REQUIRED_FIELD,
+});

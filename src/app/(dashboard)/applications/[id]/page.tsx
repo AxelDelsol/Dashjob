@@ -55,7 +55,7 @@ export default async function Page(props: { params: Promise<{ id: number }> }) {
         </Section>
         <div className="pt-2 flex justify-center gap-6">
           <Button variant="outline" asChild>
-            <Link href="/applications">Modifier (TBA)</Link>
+            <Link href={`/applications/${id}/edit`}>Modifier</Link>
           </Button>
           <DeleteApplication
             userId={user.userId}
