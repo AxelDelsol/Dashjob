@@ -4,8 +4,7 @@ import Credentials from "next-auth/providers/credentials";
 import { authConfig } from "@/auth.config";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { JWT } from "next-auth/jwt";
-import findValidUserByEmail from "./lib/users/get-users";
-import { comparePasswords } from "./lib/users/sign-in/compare-passwords";
+import { authenticateUser } from "./lib/users/users";
 
 declare module "next-auth" {
   interface User {
@@ -49,14 +48,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           throw new Error("Invalid form");
         }
 
-        const user = await findValidUserByEmail(email);
+        const user = await authenticateUser({ email, password });
 
         if (!user) {
           throw new Error("Unknown user");
-        }
-
-        if (!comparePasswords(password, user.hashedPassword)) {
-          throw new Error("Invalid password");
         }
 
         return { email: user.email, userId: user.id };
