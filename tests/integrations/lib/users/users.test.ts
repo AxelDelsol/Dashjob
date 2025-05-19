@@ -68,6 +68,26 @@ describe("createUser", () => {
       authenticateUser({ email: "email", password: "password" }),
     ).toBeTruthy();
   });
+
+  it("does not fail if the user already exists", async () => {
+    await createUser({
+      email: "email",
+      password: "password",
+      status: UserStatus.Validated,
+    });
+
+    const user = await createUser({
+      email: "email",
+      password: "password",
+      status: UserStatus.Validated,
+    });
+
+    expect(user).toBeUndefined();
+
+    expect(
+      authenticateUser({ email: "email", password: "password" }),
+    ).toBeTruthy();
+  });
 });
 
 describe("authenticateUser", () => {

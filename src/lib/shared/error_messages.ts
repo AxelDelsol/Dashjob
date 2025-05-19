@@ -5,7 +5,8 @@ export const INVALID_CREDENTIALS =
   "Les identifiants sont invalides ou votre compte n'est pas encore validé";
 
 export const INVALID_EMAIL = "L'adresse email invalide";
-export const EMAIL_ALREADY_TAKEN = "L'adresse email existe déjà";
+export const SIGN_UP_ERROR =
+  "Impossible de créer un nouveau compte. Il se peut que l'adresse email soit déjà prise";
 
 export const PASSWORD_TOO_SHORT =
   "Le mot de passe doit contenir au moins 13 caractères";

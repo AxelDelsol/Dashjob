@@ -31,6 +31,7 @@ export async function createUser({ email, password, status }: CreateUser) {
   };
   const insertedUsers = await sql`
   INSERT INTO users ${sql(user)}
+  ON CONFLICT (email) DO NOTHING
   RETURNING *`;
 
   return insertedUsers[0] as User;

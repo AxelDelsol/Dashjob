@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { INVALID_CREDENTIALS } from "../shared/error_messages";
+import { failure, Result, success } from "../shared/result";
 import { nonEmptyString } from "../shared/zod-types";
 
 const SignInSchema = z.object({
@@ -17,9 +18,7 @@ export type SignInSuccess = {
   redirectUrl: string;
 };
 
-export type SignInResult =
-  | { success: true; result: SignInSuccess }
-  | { success: false; result: SignInError };
+export type SignInResult = Result<SignInSuccess, SignInError>;
 
 export default async function signIn(
   formData: FormData,
@@ -30,20 +29,12 @@ export default async function signIn(
 
   if (!result.success) {
     return failure(result.error.flatten().fieldErrors);
-  } else {
-    const signedIn = await signInFn(result.data);
-    if (!signedIn) {
-      return failure({ error: INVALID_CREDENTIALS });
-    }
+  }
+
+  const signedIn = await signInFn(result.data);
+  if (!signedIn) {
+    return failure({ error: INVALID_CREDENTIALS });
   }
 
   return success({ redirectUrl: "/applications" });
-}
-
-function failure(errors: SignInError): SignInResult {
-  return { success: false, result: errors };
-}
-
-function success(result: SignInSuccess): SignInResult {
-  return { success: true, result: result };
 }
