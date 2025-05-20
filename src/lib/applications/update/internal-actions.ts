@@ -1,8 +1,12 @@
 import { REQUIRED_FIELD } from "@/lib/shared/error_messages";
 import { ActionState, serverAction } from "@/lib/shared/server-action";
-import { applicationStatus, nonEmptyString } from "@/lib/shared/zod-types";
+import { nonEmptyString } from "@/lib/shared/zod-types";
 import { z } from "zod";
-import updateApplication from "../update-application";
+import { updateUserApplication } from "../applications";
+
+const applicationStatus = z.nativeEnum(ApplicationStatus, {
+  required_error: REQUIRED_FIELD,
+});
 
 const UpdateApplicationSchema = z.object({
   title: nonEmptyString,
@@ -44,7 +48,7 @@ export async function updateUserApplication(
   newActionState: UpdateApplicationActionState,
   data: UpdateApplicationData,
 ) {
-  await updateApplication(userId, applicationId, {
+  await updateUserApplication(userId, applicationId, {
     ...data,
     applicationDate: new Date(data.applicationDate),
   });

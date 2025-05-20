@@ -8,8 +8,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { findUserApplicationById } from "@/lib/applications/applications";
 import deleteApplicationAction from "@/lib/applications/delete/server-actions";
-import { findUserApplicationById } from "@/lib/applications/get-applications";
 import formatDate from "@/lib/shared/format-date";
 import Link from "next/link";
 import { notFound, unauthorized } from "next/navigation";

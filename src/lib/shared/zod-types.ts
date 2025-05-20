@@ -1,18 +1,5 @@
 import { z } from "zod";
-import { ApplicationStatus } from "../applications/definitions";
 import { REQUIRED_FIELD } from "./error_messages";
-
-export const optionalNonEmptyString = z
-  .string()
-  .optional()
-  .transform((value) => {
-    if (!value) {
-      return undefined;
-    }
-    const trimmed = value.trim();
-
-    return trimmed ? trimmed : undefined;
-  });
 
 export const nonEmptyString = z
   .string({ required_error: REQUIRED_FIELD })
@@ -30,7 +17,3 @@ export const nonEmptyString = z
 
     return trimmedVal;
   });
-
-export const applicationStatus = z.nativeEnum(ApplicationStatus, {
-  required_error: REQUIRED_FIELD,
-});

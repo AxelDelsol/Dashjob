@@ -12,19 +12,18 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { CreateApplicationActionState } from "@/lib/applications/create/internal-actions";
-import { createApplicationAction } from "@/lib/applications/create/server-actions";
-import { ApplicationStatus } from "@/lib/applications/definitions";
+import {
+  createApplicationAction,
+  CreateApplicationActionState,
+} from "@/lib/applications/server-actions";
 import formatDate from "@/lib/shared/format-date";
 import Link from "next/link";
 import { useActionState } from "react";
 
-export default function Page() {
+export default function CreateForm({ userId }: { userId: number }) {
+  const action = createApplicationAction.bind(null, userId);
   const initialState: CreateApplicationActionState = { data: {}, errors: {} };
-  const [state, formAction, isPending] = useActionState(
-    createApplicationAction,
-    initialState,
-  );
+  const [state, formAction, isPending] = useActionState(action, initialState);
   return (
     <form action={formAction} aria-describedby="form-error">
       <div className="grid w-full items-center gap-4">
@@ -34,25 +33,17 @@ export default function Page() {
               <Label htmlFor="status">Statut de la candidature</Label>
               <Select
                 name="status"
-                defaultValue={state.data.status || ApplicationStatus.Applied}
+                defaultValue={state.data.status?.toString() || "applied"}
                 aria-describedby="status-error"
               >
                 <SelectTrigger className="w-[180px]">
                   <SelectValue placeholder="Choisir un statut" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value={ApplicationStatus.Applied}>
-                    Envoyée
-                  </SelectItem>
-                  <SelectItem value={ApplicationStatus.Pending}>
-                    En attente
-                  </SelectItem>
-                  <SelectItem value={ApplicationStatus.Rejected}>
-                    Refusée
-                  </SelectItem>
-                  <SelectItem value={ApplicationStatus.Accepted}>
-                    Acceptée
-                  </SelectItem>
+                  <SelectItem value="applied">Envoyée</SelectItem>
+                  <SelectItem value="pending">En attente</SelectItem>
+                  <SelectItem value="rejected">Refusée</SelectItem>
+                  <SelectItem value="accepted">Acceptée</SelectItem>
                 </SelectContent>
               </Select>
               <ErrorText
@@ -71,7 +62,7 @@ export default function Page() {
                 className="w-fit"
                 defaultValue={formatDate(
                   state.data.applicationDate
-                    ? new Date(state.data.applicationDate)
+                    ? new Date(state.data.applicationDate.toString())
                     : new Date(),
                 )}
                 required
@@ -93,7 +84,7 @@ export default function Page() {
               id="companyName"
               aria-describedby="companyName-error"
               className="w-3/5"
-              defaultValue={state.data.companyName}
+              defaultValue={state.data.companyName?.toString()}
               required
             />
             <ErrorText
@@ -112,7 +103,7 @@ export default function Page() {
               id="title"
               aria-describedby="title-error"
               className="w-3/5"
-              defaultValue={state.data.title}
+              defaultValue={state.data.title?.toString()}
               required
             />
             <ErrorText id="title-error" error_messages={state.errors.title} />
@@ -131,7 +122,7 @@ export default function Page() {
               aria-describedby="annualSalary-error"
               className="w-fit"
               max="999999"
-              defaultValue={state.data.annualSalary}
+              defaultValue={state.data.annualSalary?.toString()}
             />
             <ErrorText
               id="annualSalary-error"
@@ -150,7 +141,7 @@ export default function Page() {
               id="description"
               aria-describedby="description-error"
               maxLength={200}
-              defaultValue={state.data.description}
+              defaultValue={state.data.description?.toString()}
             />
             <ErrorText
               id="description-error"

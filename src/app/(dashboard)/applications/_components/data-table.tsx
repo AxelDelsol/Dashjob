@@ -24,7 +24,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Application } from "@/lib/applications/definitions";
+import { Application } from "@/lib/applications/applications";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
