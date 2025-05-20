@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { findUserApplicationById } from "@/lib/applications/get-applications";
+import { findUserApplicationById } from "@/lib/applications/applications";
 import { notFound, unauthorized } from "next/navigation";
 import EditForm from "./_components/edit-form";
 

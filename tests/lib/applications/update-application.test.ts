@@ -1,16 +1,16 @@
 import { Application } from "@/lib/applications/applications";
-import createApplication, {
-  CreateApplicationData,
-  CreateApplicationError,
-  CreateApplicationResult,
-} from "@/lib/applications/create-application";
+import updateApplication, {
+  UpdateApplicationData,
+  UpdateApplicationError,
+  UpdateApplicationResult,
+} from "@/lib/applications/update-application";
 import { REQUIRED_FIELD } from "@/lib/shared/error_messages";
 
-describe("createApplication", () => {
+describe("updateApplication", () => {
   it("rejects an empty title", async () => {
     const formData = new FormData();
 
-    const output = await createApplication(formData, alwaysCreateApplication);
+    const output = await updateApplication(formData, alwaysUpdateApplication);
 
     expectInvalidField(output, "title", REQUIRED_FIELD);
   });
@@ -19,7 +19,7 @@ describe("createApplication", () => {
     const formData = new FormData();
     formData.set("title", "");
 
-    const output = await createApplication(formData, alwaysCreateApplication);
+    const output = await updateApplication(formData, alwaysUpdateApplication);
 
     expectInvalidField(output, "title", REQUIRED_FIELD);
   });
@@ -27,16 +27,16 @@ describe("createApplication", () => {
   it("rejects an empty companyName", async () => {
     const formData = new FormData();
 
-    const output = await createApplication(formData, alwaysCreateApplication);
+    const output = await updateApplication(formData, alwaysUpdateApplication);
 
     expectInvalidField(output, "companyName", REQUIRED_FIELD);
   });
 
   it("rejects an empty string companyName", async () => {
     const formData = new FormData();
-    formData.set("companyName", "");
+    formData.set("companyName", "  ");
 
-    const output = await createApplication(formData, alwaysCreateApplication);
+    const output = await updateApplication(formData, alwaysUpdateApplication);
 
     expectInvalidField(output, "companyName", REQUIRED_FIELD);
   });
@@ -44,7 +44,7 @@ describe("createApplication", () => {
   it("rejects an empty status", async () => {
     const formData = new FormData();
 
-    const output = await createApplication(formData, alwaysCreateApplication);
+    const output = await updateApplication(formData, alwaysUpdateApplication);
 
     expectInvalidField(output, "status", REQUIRED_FIELD);
   });
@@ -52,32 +52,48 @@ describe("createApplication", () => {
   it("rejects an empty applicationDate", async () => {
     const formData = new FormData();
 
-    const output = await createApplication(formData, alwaysCreateApplication);
+    const output = await updateApplication(formData, alwaysUpdateApplication);
 
     expectInvalidField(output, "applicationDate", REQUIRED_FIELD);
   });
 
-  it("calls the createApplicationFn function on valid form", async () => {
+  it("rejects an empty description", async () => {
+    const formData = new FormData();
+
+    const output = await updateApplication(formData, alwaysUpdateApplication);
+
+    expectInvalidField(output, "description", REQUIRED_FIELD);
+  });
+
+  it("rejects an empty annualSalary", async () => {
+    const formData = new FormData();
+
+    const output = await updateApplication(formData, alwaysUpdateApplication);
+
+    expectInvalidField(output, "annualSalary", REQUIRED_FIELD);
+  });
+
+  it("calls the updateApplicationFn function on valid form", async () => {
     const formData = createValidForm();
 
     let called = false;
-    const mockSignUp = async (data: CreateApplicationData) => {
+    const mockSignUp = async (data: UpdateApplicationData) => {
       called = true;
-      return alwaysCreateApplication(data);
+      return alwaysUpdateApplication(data);
     };
 
-    const output = await createApplication(formData, mockSignUp);
+    const output = await updateApplication(formData, mockSignUp);
 
     expect(called).toBeTruthy();
     expect(output.success).toBeTruthy();
   });
 
-  it("returns a CreateApplicationSuccess", async () => {
+  it("returns a UpdateApplicationSuccess", async () => {
     const formData = createValidForm();
 
-    const { success, result } = await createApplication(
+    const { success, result } = await updateApplication(
       formData,
-      alwaysCreateApplication,
+      alwaysUpdateApplication,
     );
 
     expect(success).toBeTruthy();
@@ -88,14 +104,16 @@ describe("createApplication", () => {
   });
 });
 
-async function alwaysCreateApplication(
-  data: CreateApplicationData,
-): Promise<Application> {
+async function alwaysUpdateApplication(
+  data: UpdateApplicationData,
+): Promise<Application | undefined> {
   return {
     id: 2,
     userId: 1,
     ...data,
     applicationDate: new Date(data.applicationDate),
+    description: data.description || undefined,
+    annualSalary: data.annualSalary || undefined,
   };
 }
 
@@ -112,14 +130,14 @@ function createValidForm() {
 }
 
 function expectInvalidField(
-  output: CreateApplicationResult,
-  field: keyof CreateApplicationError,
+  output: UpdateApplicationResult,
+  field: keyof UpdateApplicationError,
   errorMessage: string,
 ) {
   const { success, result } = output;
 
   expect(success).toBeFalsy();
 
-  const errors = result as CreateApplicationError;
+  const errors = result as UpdateApplicationError;
   expect(errors[field]).toContain(errorMessage);
 }

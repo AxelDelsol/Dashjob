@@ -44,10 +44,8 @@ export type CreateApplicationResult = Result<
 >;
 
 export default async function createApplication(
-  userId: number,
   formData: FormData,
   createApplicationFn: (
-    userId: number,
     createApplicationData: CreateApplicationData,
   ) => Promise<Application>,
 ): Promise<CreateApplicationResult> {
@@ -57,7 +55,7 @@ export default async function createApplication(
   if (!result.success) {
     return failure(result.error.flatten().fieldErrors);
   }
-  await createApplicationFn(userId, result.data);
+  await createApplicationFn(result.data);
 
   return success({
     redirectUrl: "/applications",

@@ -2,11 +2,19 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { createUserApplication, deleteUserApplication } from "./applications";
+import {
+  createUserApplication,
+  deleteUserApplication,
+  updateUserApplication,
+} from "./applications";
 import createApplication, {
   CreateApplicationData,
   CreateApplicationError,
 } from "./create-application";
+import updateApplication, {
+  UpdateApplicationData,
+  UpdateApplicationError,
+} from "./update-application";
 
 type ActionState<E> = {
   data: {
@@ -21,21 +29,41 @@ export async function createApplicationAction(
   _prevState: CreateApplicationActionState,
   formData: FormData,
 ) {
-  const createAppFn = async (
-    userId: number,
-    createApplicationData: CreateApplicationData,
-  ) => {
+  const createAppFn = async (createApplicationData: CreateApplicationData) => {
     return createUserApplication(userId, {
       ...createApplicationData,
       applicationDate: new Date(createApplicationData.applicationDate),
     });
   };
 
-  const { success, result } = await createApplication(
-    userId,
-    formData,
-    createAppFn,
-  );
+  const { success, result } = await createApplication(formData, createAppFn);
+
+  if (success) {
+    revalidatePath(result.revalidatePath);
+    redirect(result.redirectUrl);
+  } else {
+    return {
+      data: Object.fromEntries(formData.entries()),
+      errors: result,
+    };
+  }
+}
+
+export type UpdateApplicationActionState = ActionState<UpdateApplicationError>;
+export async function updateApplicationAction(
+  userId: number,
+  applicationId: number,
+  _prevState: UpdateApplicationActionState,
+  formData: FormData,
+) {
+  const updateAppFn = async (updateApplicationData: UpdateApplicationData) => {
+    return updateUserApplication(userId, applicationId, {
+      ...updateApplicationData,
+      applicationDate: new Date(updateApplicationData.applicationDate),
+    });
+  };
+
+  const { success, result } = await updateApplication(formData, updateAppFn);
 
   if (success) {
     revalidatePath(result.revalidatePath);

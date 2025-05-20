@@ -12,9 +12,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { Application, ApplicationStatus } from "@/lib/applications/definitions";
-import { UpdateApplicationActionState } from "@/lib/applications/update/internal-actions";
-import { updateApplicationAction } from "@/lib/applications/update/server-actions";
+import { Application } from "@/lib/applications/applications";
+import {
+  updateApplicationAction,
+  UpdateApplicationActionState,
+} from "@/lib/applications/server-actions";
 import formatDate from "@/lib/shared/format-date";
 import Link from "next/link";
 import { useActionState } from "react";
@@ -27,14 +29,7 @@ export default function EditForm({
   application: Application;
 }) {
   const initialState: UpdateApplicationActionState = {
-    data: {
-      title: application.title,
-      companyName: application.companyName,
-      status: application.status,
-      applicationDate: formatDate(application.applicationDate),
-      annualSalary: application.annualSalary?.toString(),
-      description: application.description,
-    },
+    data: {},
     errors: {},
   };
 
@@ -56,25 +51,19 @@ export default function EditForm({
               <Label htmlFor="status">Statut de la candidature</Label>
               <Select
                 name="status"
-                defaultValue={state.data.status || ApplicationStatus.Applied}
+                defaultValue={
+                  state.data.status?.toString() || application.status
+                }
                 aria-describedby="status-error"
               >
                 <SelectTrigger className="w-[180px]">
                   <SelectValue placeholder="Choisir un statut" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value={ApplicationStatus.Applied}>
-                    Envoyée
-                  </SelectItem>
-                  <SelectItem value={ApplicationStatus.Pending}>
-                    En attente
-                  </SelectItem>
-                  <SelectItem value={ApplicationStatus.Rejected}>
-                    Refusée
-                  </SelectItem>
-                  <SelectItem value={ApplicationStatus.Accepted}>
-                    Acceptée
-                  </SelectItem>
+                  <SelectItem value="applied">Envoyée</SelectItem>
+                  <SelectItem value="pending">En attente</SelectItem>
+                  <SelectItem value="rejected">Refusée</SelectItem>
+                  <SelectItem value="accepted">Acceptée</SelectItem>
                 </SelectContent>
               </Select>
               <ErrorText
@@ -93,8 +82,8 @@ export default function EditForm({
                 className="w-fit"
                 defaultValue={formatDate(
                   state.data.applicationDate
-                    ? new Date(state.data.applicationDate)
-                    : new Date(),
+                    ? new Date(state.data.applicationDate.toString())
+                    : application.applicationDate,
                 )}
                 required
               />
@@ -115,7 +104,9 @@ export default function EditForm({
               id="companyName"
               aria-describedby="companyName-error"
               className="w-3/5"
-              defaultValue={state.data.companyName}
+              defaultValue={
+                state.data.companyName?.toString() || application.companyName
+              }
               required
             />
             <ErrorText
@@ -134,7 +125,7 @@ export default function EditForm({
               id="title"
               aria-describedby="title-error"
               className="w-3/5"
-              defaultValue={state.data.title}
+              defaultValue={state.data.title?.toString() || application.title}
               required
             />
             <ErrorText id="title-error" error_messages={state.errors.title} />
@@ -153,7 +144,9 @@ export default function EditForm({
               aria-describedby="annualSalary-error"
               className="w-fit"
               max="999999"
-              defaultValue={state.data.annualSalary}
+              defaultValue={
+                state.data.annualSalary?.toString() || application.annualSalary
+              }
             />
             <ErrorText
               id="annualSalary-error"
@@ -172,7 +165,9 @@ export default function EditForm({
               id="description"
               aria-describedby="description-error"
               maxLength={200}
-              defaultValue={state.data.description}
+              defaultValue={
+                state.data.description?.toString() || application.description
+              }
             />
             <ErrorText
               id="description-error"
