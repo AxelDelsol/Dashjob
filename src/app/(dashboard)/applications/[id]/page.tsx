@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { findUserApplicationById } from "@/lib/applications/applications";
-import deleteApplicationAction from "@/lib/applications/delete/server-actions";
+import { deleteApplicationAction } from "@/lib/applications/server-actions";
 import formatDate from "@/lib/shared/format-date";
 import Link from "next/link";
 import { notFound, unauthorized } from "next/navigation";

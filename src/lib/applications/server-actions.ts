@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { createUserApplication } from "./applications";
+import { createUserApplication, deleteUserApplication } from "./applications";
 import createApplication, {
   CreateApplicationData,
   CreateApplicationError,
@@ -46,4 +46,14 @@ export async function createApplicationAction(
       errors: result,
     };
   }
+}
+
+export async function deleteApplicationAction(
+  userId: number,
+  applicationId: number,
+) {
+  await deleteUserApplication(userId, applicationId);
+
+  revalidatePath("/applications");
+  redirect("/applications");
 }
