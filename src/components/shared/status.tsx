@@ -1,13 +1,13 @@
 import { Badge } from "@/components/ui/badge";
-import { ApplicationStatus } from "@/lib/applications/definitions";
+import { ApplicationStatus } from "@/lib/applications/applications";
 import clsx from "clsx";
 
-const statusToText = new Map<ApplicationStatus, string>([
-  [ApplicationStatus.Applied, "Envoyée"],
-  [ApplicationStatus.Pending, "En attente"],
-  [ApplicationStatus.Rejected, "Refusée"],
-  [ApplicationStatus.Accepted, "Acceptée"],
-]);
+const statusToText = {
+  applied: "Envoyée",
+  pending: "En attente",
+  rejected: "Refusée",
+  accepted: "Acceptée",
+};
 
 export default function Status({ status }: { status: ApplicationStatus }) {
   return (
@@ -20,7 +20,7 @@ export default function Status({ status }: { status: ApplicationStatus }) {
         "bg-green-200 border-green-600 text-green-950": status === "accepted",
       })}
     >
-      {statusToText.get(status)}
+      {statusToText[status]}
     </Badge>
   );
 }

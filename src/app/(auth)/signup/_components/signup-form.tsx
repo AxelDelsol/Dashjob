@@ -4,10 +4,7 @@ import ErrorText from "@/components/shared/error-text";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  signUpAction,
-  SignUpActionState,
-} from "@/lib/users/sign-up/server-actions";
+import { signUpAction, SignUpActionState } from "@/lib/users/server-actions";
 import Link from "next/link";
 import { useActionState } from "react";
 
@@ -30,11 +27,11 @@ export default function SignUpForm() {
               id="email"
               aria-describedby="email-error"
               placeholder="email@example.com"
-              defaultValue={state.data?.email}
+              defaultValue={state.data.email?.toString()}
               required
             />
           </div>
-          <ErrorText id="email-error" error_messages={state.errors?.email} />
+          <ErrorText id="email-error" error_messages={state.errors.email} />
         </div>
 
         <div className="mb-4">
@@ -49,13 +46,13 @@ export default function SignUpForm() {
               name="password"
               id="password"
               aria-describedby="password-error"
-              defaultValue={state.data?.password}
+              defaultValue={state.data.password?.toString()}
               required
             />
           </div>
           <ErrorText
             id="password-error"
-            error_messages={state.errors?.password}
+            error_messages={state.errors.password}
           />
         </div>
 
@@ -67,13 +64,13 @@ export default function SignUpForm() {
               name="confirmedPassword"
               id="confirmedPassword"
               aria-describedby="confirmedPassword-error"
-              defaultValue={state.data?.confirmedPassword}
+              defaultValue={state.data.confirmedPassword?.toString()}
               required
             />
           </div>
           <ErrorText
             id="confirmedPassword-error"
-            error_messages={state.errors?.confirmedPassword}
+            error_messages={state.errors.confirmedPassword}
           />
         </div>
 

@@ -9,7 +9,7 @@
     "start": "next start",
     "lint": "next lint",
     "unit": "jest --testPathIgnorePatterns=tests/integrations",
-    "test": "jest",
+    "test": "jest --runInBand",
     "pretty": "prettier --write \"./**/*.{js,jsx,mjs,cjs,ts,tsx,json}\""
   },
   "dependencies": {

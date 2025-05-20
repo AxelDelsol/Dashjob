@@ -1,10 +1,5 @@
-"use server";
-
 import { z } from "zod";
-
-import { UNIQUE_VIOLATION } from "@/lib/shared/db";
 import {
-  EMAIL_ALREADY_TAKEN,
   INVALID_EMAIL,
   PASSWORD_INVALID_MATCH,
   PASSWORD_NO_DIGIT,
@@ -12,23 +7,15 @@ import {
   PASSWORD_NO_SPECIAL,
   PASSWORD_NO_UPPER,
   PASSWORD_TOO_SHORT,
-} from "@/lib/shared/error_messages";
-import {
-  ActionState,
-  containsErrors,
-  serverAction,
-} from "@/lib/shared/server-action";
-import { nonEmptyString } from "@/lib/shared/zod-types";
-import { redirect } from "next/navigation";
-import postgres from "postgres";
-import createUser from "../create-user";
-import { UserStatus } from "../definitions";
+  SIGN_UP_ERROR,
+} from "../shared/error_messages";
+import { failure, Result, success } from "../shared/result";
+import { nonEmptyString } from "../shared/zod-types";
+import { User } from "./users";
 
-const EmailSchema = z.object({
-  email: nonEmptyString.pipe(z.string().email({ message: INVALID_EMAIL })),
-});
-const PasswordSchema = z
+const SignUpSchema = z
   .object({
+    email: nonEmptyString.pipe(z.string().email({ message: INVALID_EMAIL })),
     password: nonEmptyString.superRefine((val, ctx) =>
       validatePassword(val, ctx),
     ),
@@ -39,52 +26,34 @@ const PasswordSchema = z
     path: ["confirmedPassword"],
   });
 
-const SignUpSchema = z.intersection(EmailSchema, PasswordSchema);
-
 export type SignUpData = z.infer<typeof SignUpSchema>;
-export type SignUpActionState = ActionState<SignUpData>;
 
-export async function signUpAction(
-  prevState: SignUpActionState,
+export type SignUpError = {
+  [K in keyof SignUpData]?: string[];
+};
+
+export type SignUpSuccess = {
+  redirectUrl: string;
+};
+
+export type SignUpResult = Result<SignUpSuccess, SignUpError>;
+
+export default async function signUp(
   formData: FormData,
-) {
-  const newActionState = await action(formData, signUpUser);
+  signUpFn: (signInData: SignUpData) => Promise<User | undefined>,
+): Promise<SignUpResult> {
+  const data = Object.fromEntries(formData.entries());
+  const result = SignUpSchema.safeParse(data);
 
-  if (containsErrors(newActionState)) {
-    return newActionState;
+  if (!result.success) {
+    return failure(result.error.flatten().fieldErrors);
+  }
+  const user = await signUpFn(result.data);
+  if (!user) {
+    return failure({ email: [SIGN_UP_ERROR] });
   }
 
-  redirect("/signup/notice");
-}
-
-export async function action(
-  formData: FormData,
-  onSuccess?: (
-    newActionState: SignUpActionState,
-    data: SignUpData,
-  ) => Promise<void>,
-) {
-  return serverAction(SignUpSchema, formData, onSuccess);
-}
-
-async function signUpUser(newActionState: SignUpActionState, data: SignUpData) {
-  try {
-    await createUser({
-      email: data.email,
-      password: data.password,
-      status: UserStatus.Pending,
-    });
-  } catch (error) {
-    if (
-      error instanceof postgres.PostgresError &&
-      error.code === UNIQUE_VIOLATION
-    ) {
-      newActionState.data = {};
-      newActionState.errors.email = [EMAIL_ALREADY_TAKEN];
-    } else {
-      throw error;
-    }
-  }
+  return success({ redirectUrl: "/signup/notice" });
 }
 
 const MIN_PASSWORD_LENGTH = 13;

@@ -8,8 +8,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import deleteApplicationAction from "@/lib/applications/delete/server-actions";
-import { findUserApplicationById } from "@/lib/applications/get-applications";
+import { findUserApplicationById } from "@/lib/applications/applications";
+import { deleteApplicationAction } from "@/lib/applications/server-actions";
 import formatDate from "@/lib/shared/format-date";
 import Link from "next/link";
 import { notFound, unauthorized } from "next/navigation";
@@ -55,7 +55,7 @@ export default async function Page(props: { params: Promise<{ id: number }> }) {
         </Section>
         <div className="pt-2 flex justify-center gap-6">
           <Button variant="outline" asChild>
-            <Link href="/applications">Modifier (TBA)</Link>
+            <Link href={`/applications/${id}/edit`}>Modifier</Link>
           </Button>
           <DeleteApplication
             userId={user.userId}

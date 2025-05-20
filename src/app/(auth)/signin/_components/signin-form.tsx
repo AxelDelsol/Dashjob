@@ -3,12 +3,12 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { signInAction } from "@/lib/users/sign-in/server-actions";
+import { signInAction, SignInActionState } from "@/lib/users/server-actions";
 import Link from "next/link";
 import { useActionState } from "react";
 
 export default function SignInForm() {
-  const initialState: string = "";
+  const initialState: SignInActionState = { data: {}, errors: {} };
   const [state, formAction, isPending] = useActionState(
     signInAction,
     initialState,
@@ -18,10 +18,8 @@ export default function SignInForm() {
     <form action={formAction} aria-describedby="form-error">
       <div className="grid w-full items-center gap-4">
         <div id="form-error" aria-live="polite" aria-atomic="true">
-          {state && (
-            <p className="mt-2 text-red-500" key={state}>
-              {state}
-            </p>
+          {state.errors.error && (
+            <p className="mt-2 text-red-500">{state.errors.error}</p>
           )}
         </div>
 
@@ -32,8 +30,8 @@ export default function SignInForm() {
               type="email"
               name="email"
               id="email"
-              aria-describedby="email-error"
               placeholder="email@example.com"
+              required
             />
           </div>
         </div>
@@ -41,12 +39,7 @@ export default function SignInForm() {
         <div className="mb-4">
           <div className="flex flex-col space-y-1.5">
             <Label htmlFor="password">Mot de passe</Label>
-            <Input
-              type="password"
-              name="password"
-              id="password"
-              aria-describedby="password-error"
-            />
+            <Input type="password" name="password" id="password" required />
           </div>
         </div>
 

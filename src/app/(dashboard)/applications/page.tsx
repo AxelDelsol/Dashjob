@@ -1,5 +1,5 @@
 import { auth } from "@/auth";
-import { findUserApplications } from "@/lib/applications/get-applications";
+import { findUserApplications } from "@/lib/applications/applications";
 import { unauthorized } from "next/navigation";
 import { columns } from "./_components/columns";
 import { DataTable } from "./_components/data-table";

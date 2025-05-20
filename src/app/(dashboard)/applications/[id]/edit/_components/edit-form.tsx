@@ -12,18 +12,36 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { Application } from "@/lib/applications/applications";
 import {
-  createApplicationAction,
-  CreateApplicationActionState,
+  updateApplicationAction,
+  UpdateApplicationActionState,
 } from "@/lib/applications/server-actions";
 import formatDate from "@/lib/shared/format-date";
 import Link from "next/link";
 import { useActionState } from "react";
 
-export default function CreateForm({ userId }: { userId: number }) {
-  const action = createApplicationAction.bind(null, userId);
-  const initialState: CreateApplicationActionState = { data: {}, errors: {} };
-  const [state, formAction, isPending] = useActionState(action, initialState);
+export default function EditForm({
+  userId,
+  application,
+}: {
+  userId: number;
+  application: Application;
+}) {
+  const initialState: UpdateApplicationActionState = {
+    data: {},
+    errors: {},
+  };
+
+  const serverAction = updateApplicationAction.bind(
+    null,
+    userId,
+    application.id,
+  );
+  const [state, formAction, isPending] = useActionState(
+    serverAction,
+    initialState,
+  );
   return (
     <form action={formAction} aria-describedby="form-error">
       <div className="grid w-full items-center gap-4">
@@ -33,7 +51,9 @@ export default function CreateForm({ userId }: { userId: number }) {
               <Label htmlFor="status">Statut de la candidature</Label>
               <Select
                 name="status"
-                defaultValue={state.data.status?.toString() || "applied"}
+                defaultValue={
+                  state.data.status?.toString() || application.status
+                }
                 aria-describedby="status-error"
               >
                 <SelectTrigger className="w-[180px]">
@@ -63,7 +83,7 @@ export default function CreateForm({ userId }: { userId: number }) {
                 defaultValue={formatDate(
                   state.data.applicationDate
                     ? new Date(state.data.applicationDate.toString())
-                    : new Date(),
+                    : application.applicationDate,
                 )}
                 required
               />
@@ -84,7 +104,9 @@ export default function CreateForm({ userId }: { userId: number }) {
               id="companyName"
               aria-describedby="companyName-error"
               className="w-3/5"
-              defaultValue={state.data.companyName?.toString()}
+              defaultValue={
+                state.data.companyName?.toString() || application.companyName
+              }
               required
             />
             <ErrorText
@@ -103,7 +125,7 @@ export default function CreateForm({ userId }: { userId: number }) {
               id="title"
               aria-describedby="title-error"
               className="w-3/5"
-              defaultValue={state.data.title?.toString()}
+              defaultValue={state.data.title?.toString() || application.title}
               required
             />
             <ErrorText id="title-error" error_messages={state.errors.title} />
@@ -122,7 +144,9 @@ export default function CreateForm({ userId }: { userId: number }) {
               aria-describedby="annualSalary-error"
               className="w-fit"
               max="999999"
-              defaultValue={state.data.annualSalary?.toString()}
+              defaultValue={
+                state.data.annualSalary?.toString() || application.annualSalary
+              }
             />
             <ErrorText
               id="annualSalary-error"
@@ -141,7 +165,9 @@ export default function CreateForm({ userId }: { userId: number }) {
               id="description"
               aria-describedby="description-error"
               maxLength={200}
-              defaultValue={state.data.description?.toString()}
+              defaultValue={
+                state.data.description?.toString() || application.description
+              }
             />
             <ErrorText
               id="description-error"
@@ -152,14 +178,14 @@ export default function CreateForm({ userId }: { userId: number }) {
 
         <div className="flex justify-start gap-6">
           <Button variant="outline" asChild>
-            <Link href="/applications">Annuler</Link>
+            <Link href={`/applications/${application.id}`}>Annuler</Link>
           </Button>
           <Button
             type="submit"
             disabled={isPending}
             className="cursor-pointer bg-blue-500 text-white transition-colors hover:bg-blue-400"
           >
-            {isPending ? "Création..." : "Créer la candidature"}
+            {isPending ? "Edition..." : "Editer la candidature"}
           </Button>
         </div>
       </div>
